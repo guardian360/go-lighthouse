@@ -31,6 +31,11 @@ func (api *APIv1) HackerAlertAppliances() *HackerAlertAppliancesAPIv1 {
 	return NewHackerAlertAppliancesAPIv1(api.Client)
 }
 
+// ScanObjects retrieves the scan objects API.
+func (api *APIv1) ScanObjects() *ScanObjectsAPIv1 {
+	return NewScanObjectsAPIv1(api.Client)
+}
+
 // APIv1Response is the response wrapper for API v1.
 type APIv1Response struct {
 	Success bool        `json:"success"`
