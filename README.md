@@ -2,6 +2,18 @@
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/guardian360/go-lighthouse.svg)](https://pkg.go.dev/github.com/guardian360/go-lighthouse)
 
+---
+
+## ⚠️🚧 Work in Progress 🚧⚠️
+
+**This project is still under active development.**  
+APIs and functionality may change, and certain features may not yet be fully
+implemented.
+
+❗ **Not recommended for production use.**
+
+---
+
 A Go client library for interacting with the Lighthouse API.
 
 ## 📖 Overview
