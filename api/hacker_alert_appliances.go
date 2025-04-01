@@ -7,7 +7,7 @@ type HackerAlertAppliancesAPI struct {
 }
 
 // Get retrieves a list of hacker alert appliances.
-func (h *HackerAlertAppliancesAPI) Get() (map[string]interface{}, error) {
+func (h *HackerAlertAppliancesAPI) Get() (APIResponse, error) {
 	return h.APIResource.Get(h.Path)
 }
 
@@ -30,7 +30,7 @@ type HackerAlertApplianceInstance struct {
 }
 
 // Get retrieves a single hacker alert appliance.
-func (h *HackerAlertApplianceInstance) Get() (map[string]interface{}, error) {
+func (h *HackerAlertApplianceInstance) Get() (APIResponse, error) {
 	return h.APIResource.Get(h.id)
 }
 

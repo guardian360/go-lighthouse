@@ -19,8 +19,9 @@ func V1(c *client.Client) *APIv1 {
 func (api *APIv1) Heartbeat() *HeartbeatAPI {
 	return &HeartbeatAPI{
 		APIResource: APIResource{
-			Client: api.Client,
-			Path:   "heartbeat",
+			Client:      api.Client,
+			Path:        "heartbeat",
+			APIResponse: &APIv1Response{},
 		},
 	}
 }
@@ -29,9 +30,10 @@ func (api *APIv1) Heartbeat() *HeartbeatAPI {
 func (api *APIv1) Probes() *ProbesAPI {
 	return &ProbesAPI{
 		APIResource: APIResource{
-			Client:  api.Client,
-			Version: "v1",
-			Path:    "probes",
+			Client:      api.Client,
+			Version:     "v1",
+			Path:        "probes",
+			APIResponse: &APIv1Response{},
 		},
 	}
 }
@@ -40,9 +42,22 @@ func (api *APIv1) Probes() *ProbesAPI {
 func (api *APIv1) HackerAlertAppliances() *HackerAlertAppliancesAPI {
 	return &HackerAlertAppliancesAPI{
 		APIResource: APIResource{
-			Client:  api.Client,
-			Version: "v1",
-			Path:    "hacker-alert-appliances",
+			Client:      api.Client,
+			Version:     "v1",
+			Path:        "hacker-alert-appliances",
+			APIResponse: &APIv1Response{},
 		},
 	}
+}
+
+// APIv1Response is the response wrapper for API v1.
+type APIv1Response struct {
+	Success bool        `json:"success"`
+	Message string      `json:"message"`
+	Data    interface{} `json:"data"`
+}
+
+// Wrap wraps the response from the API.
+func (r *APIv1Response) Wrap(resp map[string]interface{}) error {
+	return wrap(resp, r)
 }

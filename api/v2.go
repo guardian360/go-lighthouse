@@ -19,9 +19,10 @@ func V2(c *client.Client) *APIv2 {
 func (api *APIv2) Probes() *ProbesAPI {
 	return &ProbesAPI{
 		APIResource: APIResource{
-			Client:  api.Client,
-			Version: "v2",
-			Path:    "probes",
+			Client:      api.Client,
+			Version:     "v2",
+			Path:        "probes",
+			APIResponse: &APIv2Response{},
 		},
 	}
 }
@@ -30,9 +31,40 @@ func (api *APIv2) Probes() *ProbesAPI {
 func (api *APIv2) ScanTrackers() *ScanTrackersAPI {
 	return &ScanTrackersAPI{
 		APIResource: APIResource{
-			Client:  api.Client,
-			Version: "v2",
-			Path:    "scan-trackers",
+			Client:      api.Client,
+			Version:     "v2",
+			Path:        "scan-trackers",
+			APIResponse: &APIv2Response{},
 		},
 	}
+}
+
+// APIv2Response is the response wrapper for API v2.
+type APIv2Response struct {
+	Data  interface{} `json:"data"`
+	Links struct {
+		First string `json:"first"`
+		Last  string `json:"last"`
+		Prev  string `json:"prev"`
+		Next  string `json:"next"`
+	} `json:"links"`
+	Meta struct {
+		CurrentPage int `json:"current_page"`
+		From        int `json:"from"`
+		LastPage    int `json:"last_page"`
+		Links       []struct {
+			URL    string `json:"url"`
+			Label  string `json:"label"`
+			Active bool   `json:"active"`
+		} `json:"links"`
+		Path    string `json:"path"`
+		PerPage int    `json:"per_page"`
+		To      int    `json:"to"`
+		Total   int    `json:"total"`
+	} `json:"meta"`
+}
+
+// Wrap wraps the response from the API.
+func (r *APIv2Response) Wrap(resp map[string]interface{}) error {
+	return wrap(resp, r)
 }

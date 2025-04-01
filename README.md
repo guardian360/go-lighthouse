@@ -48,7 +48,7 @@ import (
 
 func main() {
     config := client.Config{
-        BaseURL:  "https://lighthouse.guardian360.nl",
+        BaseURL: "https://lighthouse.guardian360.nl",
     }
     lighthouse := client.New(config)
 
@@ -58,7 +58,7 @@ func main() {
         os.Exit(1)
     }
 
-    fmt.Println("Lighthouse API heartbeat response:", response)
+    fmt.Printf("Lighthouse API heartbeat response: %+v\n", response)
 }
 ```
 
@@ -83,8 +83,7 @@ import (
 
 func main() {
     config := client.Config{
-        BaseURL:  "https://lighthouse.guardian360.nl",
-        Insecure: false,
+        BaseURL: "https://lighthouse.guardian360.nl",
     }
     lighthouse := client.New(config).WithOAuth(client.ClientCredentialsGrant{
         TokenURL: "https://lighthouse.guardian360.nl/oauth/token",
@@ -98,7 +97,7 @@ func main() {
         os.Exit(1)
     }
 
-    fmt.Println("Lighthouse API probes response:", response)
+    fmt.Printf("Lighthouse API probes response: %+v\n", response)
 }
 ```
 

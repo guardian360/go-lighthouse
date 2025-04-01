@@ -6,7 +6,7 @@ type HostDiscoveriesAPI struct {
 }
 
 // Get retrieves a list of host discoveries.
-func (h *HostDiscoveriesAPI) Get() (map[string]interface{}, error) {
+func (h *HostDiscoveriesAPI) Get() (APIResponse, error) {
 	return h.APIResource.Get(h.Path)
 }
 

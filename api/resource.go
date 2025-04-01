@@ -8,15 +8,16 @@ import (
 
 // APIResource is the base resource for all API resources.
 type APIResource struct {
-	Client  *client.Client
-	Version string
-	BaseURL string
-	Path    string
+	Client      *client.Client
+	Version     string
+	BaseURL     string
+	Path        string
+	APIResponse APIResponse
 }
 
 // Get sends a GET request to the resource.
-func (r *APIResource) Get(resource string) (map[string]interface{}, error) {
-	return r.Client.Do("GET", r.formatURL(resource), nil)
+func (r *APIResource) Get(resource string) (APIResponse, error) {
+	return r.do("GET", r.formatURL(resource), nil)
 }
 
 // Post sends a POST request to the resource.
@@ -46,4 +47,17 @@ func (r *APIResource) formatURL(resource string) string {
 		baseURL = r.BaseURL
 	}
 	return fmt.Sprintf("%s/%s", baseURL, resource)
+}
+
+func (r *APIResource) do(method, url string, data map[string]interface{}) (APIResponse, error) {
+	resp, err := r.Client.Do(method, url, data)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := r.APIResponse.Wrap(resp); err != nil {
+		return nil, err
+	}
+
+	return r.APIResponse, nil
 }

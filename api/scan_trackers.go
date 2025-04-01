@@ -8,7 +8,7 @@ type ScanTrackersAPI struct {
 }
 
 // Get retrieves a list of scan trackers.
-func (s *ScanTrackersAPI) Get() (map[string]interface{}, error) {
+func (s *ScanTrackersAPI) Get() (APIResponse, error) {
 	return s.APIResource.Get(s.Path)
 }
 
@@ -37,7 +37,7 @@ type ScanTrackerInstance struct {
 }
 
 // Get retrieves a single scan tracker.
-func (s *ScanTrackerInstance) Get() (map[string]interface{}, error) {
+func (s *ScanTrackerInstance) Get() (APIResponse, error) {
 	return s.APIResource.Get(s.id)
 }
 

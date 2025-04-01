@@ -6,6 +6,6 @@ type ScanObjectsAPI struct {
 }
 
 // Get retrieves a list of scan objects.
-func (s *ScanObjectsAPI) Get() (map[string]interface{}, error) {
+func (s *ScanObjectsAPI) Get() (APIResponse, error) {
 	return s.APIResource.Get(s.Path)
 }

@@ -6,6 +6,6 @@ type SchedulesAPI struct {
 }
 
 // Get retrieves a list of schedules.
-func (s *SchedulesAPI) Get() (map[string]interface{}, error) {
+func (s *SchedulesAPI) Get() (APIResponse, error) {
 	return s.APIResource.Get(s.Path)
 }

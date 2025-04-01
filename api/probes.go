@@ -8,7 +8,7 @@ type ProbesAPI struct {
 }
 
 // Get retrieves a list of probes.
-func (p *ProbesAPI) Get() (map[string]interface{}, error) {
+func (p *ProbesAPI) Get() (APIResponse, error) {
 	return p.APIResource.Get(p.Path)
 }
 
@@ -16,10 +16,11 @@ func (p *ProbesAPI) Get() (map[string]interface{}, error) {
 func (p *ProbesAPI) ID(id string) *ProbeInstance {
 	return &ProbeInstance{
 		APIResource: APIResource{
-			Client:  p.Client,
-			Version: p.Version,
-			BaseURL: fmt.Sprintf("%s/api/%s/%s", p.Client.BaseURL, p.Version, p.Path),
-			Path:    p.Path,
+			Client:      p.Client,
+			Version:     p.Version,
+			BaseURL:     fmt.Sprintf("%s/api/%s/%s", p.Client.BaseURL, p.Version, p.Path),
+			Path:        p.Path,
+			APIResponse: p.APIResponse,
 		},
 		id: id,
 	}
@@ -32,7 +33,7 @@ type ProbeInstance struct {
 }
 
 // Get retrieves a single probe.
-func (p *ProbeInstance) Get() (map[string]interface{}, error) {
+func (p *ProbeInstance) Get() (APIResponse, error) {
 	return p.APIResource.Get(p.id)
 }
 
@@ -45,10 +46,11 @@ func (p *ProbeInstance) Update(data map[string]interface{}) (map[string]interfac
 func (p *ProbeInstance) Schedules() *SchedulesAPI {
 	return &SchedulesAPI{
 		APIResource: APIResource{
-			Client:  p.Client,
-			Version: p.Version,
-			BaseURL: fmt.Sprintf("%s/api/%s/%s/%s", p.Client.BaseURL, p.Version, p.Path, p.id),
-			Path:    "schedules",
+			Client:      p.Client,
+			Version:     p.Version,
+			BaseURL:     fmt.Sprintf("%s/api/%s/%s/%s", p.Client.BaseURL, p.Version, p.Path, p.id),
+			Path:        "schedules",
+			APIResponse: p.APIResponse,
 		},
 	}
 }
@@ -57,10 +59,11 @@ func (p *ProbeInstance) Schedules() *SchedulesAPI {
 func (p *ProbeInstance) ScanObjects() *ScanObjectsAPI {
 	return &ScanObjectsAPI{
 		APIResource: APIResource{
-			Client:  p.Client,
-			Version: p.Version,
-			BaseURL: fmt.Sprintf("%s/api/%s/%s/%s", p.Client.BaseURL, p.Version, p.Path, p.id),
-			Path:    "scanobjects",
+			Client:      p.Client,
+			Version:     p.Version,
+			BaseURL:     fmt.Sprintf("%s/api/%s/%s/%s", p.Client.BaseURL, p.Version, p.Path, p.id),
+			Path:        "scanobjects",
+			APIResponse: p.APIResponse,
 		},
 	}
 }
@@ -69,10 +72,11 @@ func (p *ProbeInstance) ScanObjects() *ScanObjectsAPI {
 func (p *ProbeInstance) ScanTrackers() *ScanTrackersAPI {
 	return &ScanTrackersAPI{
 		APIResource: APIResource{
-			Client:  p.Client,
-			Version: p.Version,
-			BaseURL: fmt.Sprintf("%s/api/%s/%s/%s", p.Client.BaseURL, p.Version, p.Path, p.id),
-			Path:    "scan-trackers",
+			Client:      p.Client,
+			Version:     p.Version,
+			BaseURL:     fmt.Sprintf("%s/api/%s/%s/%s", p.Client.BaseURL, p.Version, p.Path, p.id),
+			Path:        "scan-trackers",
+			APIResponse: p.APIResponse,
 		},
 	}
 }

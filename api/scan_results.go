@@ -6,7 +6,7 @@ type ScanResultsAPI struct {
 }
 
 // Get retrieves a list of scan results.
-func (s *ScanResultsAPI) Get() (map[string]interface{}, error) {
+func (s *ScanResultsAPI) Get() (APIResponse, error) {
 	return s.APIResource.Get(s.Path)
 }
 

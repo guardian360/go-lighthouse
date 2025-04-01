@@ -6,6 +6,6 @@ type HeartbeatAPI struct {
 }
 
 // Get retrieves the API heartbeat response.
-func (h *HeartbeatAPI) Get() (map[string]interface{}, error) {
+func (h *HeartbeatAPI) Get() (APIResponse, error) {
 	return h.APIResource.Get(h.Path)
 }
