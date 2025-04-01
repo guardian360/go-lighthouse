@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/guardian360/go-lighthouse/client"
+	"github.com/mitchellh/mapstructure"
 )
 
 // APIv1 is the representation of Lighthouse API v1. It is meant to be used as
@@ -16,38 +17,18 @@ func V1(c *client.Client) *APIv1 {
 }
 
 // Heartbeat retrieves the heartbeat API.
-func (api *APIv1) Heartbeat() *HeartbeatAPI {
-	return &HeartbeatAPI{
-		APIResource: APIResource{
-			Client:      api.Client,
-			Path:        "heartbeat",
-			APIResponse: &APIv1Response{},
-		},
-	}
+func (api *APIv1) Heartbeat() *HeartbeatAPIv1 {
+	return NewHeartbeatAPIv1(api.Client)
 }
 
 // Probes retrieves the probes API.
-func (api *APIv1) Probes() *ProbesAPI {
-	return &ProbesAPI{
-		APIResource: APIResource{
-			Client:      api.Client,
-			Version:     "v1",
-			Path:        "probes",
-			APIResponse: &APIv1Response{},
-		},
-	}
+func (api *APIv1) Probes() *ProbesAPIv1 {
+	return NewProbesAPIv1(api.Client)
 }
 
 // HackerAlertAppliances retrieves the hacker alert appliances API.
-func (api *APIv1) HackerAlertAppliances() *HackerAlertAppliancesAPI {
-	return &HackerAlertAppliancesAPI{
-		APIResource: APIResource{
-			Client:      api.Client,
-			Version:     "v1",
-			Path:        "hacker-alert-appliances",
-			APIResponse: &APIv1Response{},
-		},
-	}
+func (api *APIv1) HackerAlertAppliances() *HackerAlertAppliancesAPIv1 {
+	return NewHackerAlertAppliancesAPIv1(api.Client)
 }
 
 // APIv1Response is the response wrapper for API v1.
@@ -57,7 +38,7 @@ type APIv1Response struct {
 	Data    interface{} `json:"data"`
 }
 
-// Wrap wraps the response from the API.
-func (r *APIv1Response) Wrap(resp map[string]interface{}) error {
-	return wrap(resp, r)
+// Decode decodes the Data field into the provided struct.
+func (r *APIv1Response) Decode(v interface{}) error {
+	return mapstructure.Decode(r.Data, v)
 }

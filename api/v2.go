@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/guardian360/go-lighthouse/client"
+	"github.com/mitchellh/mapstructure"
 )
 
 // APIv2 is the representation of Lighthouse API v2. It is meant to be used as
@@ -15,28 +16,19 @@ func V2(c *client.Client) *APIv2 {
 	return &APIv2{Client: c}
 }
 
+// Heartbeat retrieves the heartbeat API.
+func (api *APIv2) Heartbeat() *HeartbeatAPIv2 {
+	return NewHeartbeatAPIv2(api.Client)
+}
+
 // Probes retrieves the probes API.
-func (api *APIv2) Probes() *ProbesAPI {
-	return &ProbesAPI{
-		APIResource: APIResource{
-			Client:      api.Client,
-			Version:     "v2",
-			Path:        "probes",
-			APIResponse: &APIv2Response{},
-		},
-	}
+func (api *APIv2) Probes() *ProbesAPIv2 {
+	return NewProbesAPIv2(api.Client)
 }
 
 // ScanTrackers retrieves the scan trackers API.
-func (api *APIv2) ScanTrackers() *ScanTrackersAPI {
-	return &ScanTrackersAPI{
-		APIResource: APIResource{
-			Client:      api.Client,
-			Version:     "v2",
-			Path:        "scan-trackers",
-			APIResponse: &APIv2Response{},
-		},
-	}
+func (api *APIv2) ScanTrackers() *ScanTrackersAPIv2 {
+	return NewScanTrackersAPIv2(api.Client)
 }
 
 // APIv2Response is the response wrapper for API v2.
@@ -47,7 +39,7 @@ type APIv2Response struct {
 		Last  string `json:"last"`
 		Prev  string `json:"prev"`
 		Next  string `json:"next"`
-	} `json:"links"`
+	} `json:"links,omitempty"`
 	Meta struct {
 		CurrentPage int `json:"current_page"`
 		From        int `json:"from"`
@@ -61,10 +53,10 @@ type APIv2Response struct {
 		PerPage int    `json:"per_page"`
 		To      int    `json:"to"`
 		Total   int    `json:"total"`
-	} `json:"meta"`
+	} `json:"meta,omitempty"`
 }
 
-// Wrap wraps the response from the API.
-func (r *APIv2Response) Wrap(resp map[string]interface{}) error {
-	return wrap(resp, r)
+// Decode decodes the Data field into the provided struct.
+func (r *APIv2Response) Decode(v interface{}) error {
+	return mapstructure.Decode(r.Data, v)
 }
