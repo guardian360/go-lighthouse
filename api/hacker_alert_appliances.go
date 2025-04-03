@@ -20,7 +20,7 @@ func NewHackerAlertAppliancesAPIv1(client *client.Client) *HackerAlertAppliances
 
 // Get retrieves a list of hacker alert appliances.
 func (h *HackerAlertAppliancesAPIv1) Get() (*APIv1Response, error) {
-	return do[APIv1Response](h.APIRequestHandler, "GET", h.BaseURL, nil)
+	return do[APIv1Response](h.APIRequestHandler, "GET", h.buildURL(), nil)
 }
 
 // ID sets the ID of the hacker alert appliance to return a single instance.
@@ -48,20 +48,20 @@ func NewHackerAlertApplianceInstanceV1(client *client.Client, id string) *Hacker
 
 // Get retrieves a single hacker alert appliance.
 func (h *HackerAlertApplianceInstanceV1) Get() (*APIv1Response, error) {
-	return do[APIv1Response](h.APIRequestHandler, "GET", h.BaseURL, nil)
+	return do[APIv1Response](h.APIRequestHandler, "GET", h.buildURL(), nil)
 }
 
 // Create creates a new hacker alert appliance.
 func (h *HackerAlertApplianceInstanceV1) Create(data map[string]interface{}) (*APIv1Response, error) {
-	return do[APIv1Response](h.APIRequestHandler, "POST", h.BaseURL, data)
+	return do[APIv1Response](h.APIRequestHandler, "POST", h.buildURL(), data)
 }
 
 // Update updates a hacker alert appliance.
 func (h *HackerAlertApplianceInstanceV1) Update(data map[string]interface{}) (*APIv1Response, error) {
-	return do[APIv1Response](h.APIRequestHandler, "PUT", h.BaseURL, data)
+	return do[APIv1Response](h.APIRequestHandler, "PUT", h.buildURL(), data)
 }
 
 // Delete deletes a hacker alert appliance.
 func (h *HackerAlertApplianceInstanceV1) Delete() (*APIv1Response, error) {
-	return do[APIv1Response](h.APIRequestHandler, "DELETE", h.BaseURL, nil)
+	return do[APIv1Response](h.APIRequestHandler, "DELETE", h.buildURL(), nil)
 }

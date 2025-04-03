@@ -1,6 +1,11 @@
 package api
 
-import "github.com/guardian360/go-lighthouse/client"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/guardian360/go-lighthouse/client"
+)
 
 // ProbesAPIv1 is the API for the probes resource.
 type ProbesAPIv1 struct {
@@ -19,7 +24,7 @@ func NewProbesAPIv1(c *client.Client) *ProbesAPIv1 {
 
 // Get retrieves a list of probes.
 func (p *ProbesAPIv1) Get() (*APIv1Response, error) {
-	return do[APIv1Response](p.APIRequestHandler, "GET", p.BaseURL, nil)
+	return do[APIv1Response](p.APIRequestHandler, "GET", p.buildURL(), nil)
 }
 
 // ByID retrieves a single probe by ID.
@@ -46,22 +51,22 @@ func NewProbesInstanceV1(c *client.Client, id string) *ProbeInstanceV1 {
 
 // Get retrieves a single probe by ID.
 func (p *ProbeInstanceV1) Get() (*APIv1Response, error) {
-	return do[APIv1Response](p.APIRequestHandler, "GET", p.BaseURL, nil)
+	return do[APIv1Response](p.APIRequestHandler, "GET", p.buildURL(), nil)
 }
 
 // Create creates a new probe.
 func (p *ProbeInstanceV1) Create(data map[string]interface{}) (*APIv1Response, error) {
-	return do[APIv1Response](p.APIRequestHandler, "POST", p.BaseURL, data)
+	return do[APIv1Response](p.APIRequestHandler, "POST", p.buildURL(), data)
 }
 
 // Update updates a probe.
 func (p *ProbeInstanceV1) Update(data map[string]interface{}) (*APIv1Response, error) {
-	return do[APIv1Response](p.APIRequestHandler, "PUT", p.BaseURL, data)
+	return do[APIv1Response](p.APIRequestHandler, "PUT", p.buildURL(), data)
 }
 
 // Delete deletes a probe.
 func (p *ProbeInstanceV1) Delete() (*APIv1Response, error) {
-	return do[APIv1Response](p.APIRequestHandler, "DELETE", p.BaseURL, nil)
+	return do[APIv1Response](p.APIRequestHandler, "DELETE", p.buildURL(), nil)
 }
 
 // ProbesAPIv2 is the v2 API for the probes resource.
@@ -81,12 +86,36 @@ func NewProbesAPIv2(c *client.Client) *ProbesAPIv2 {
 
 // Get retrieves a list of probes.
 func (p *ProbesAPIv2) Get() (*APIv2Response, error) {
-	return do[APIv2Response](p.APIRequestHandler, "GET", p.BaseURL, nil)
+	return do[APIv2Response](p.APIRequestHandler, "GET", p.buildURL(), nil)
 }
 
 // ByID retrieves a single probe by ID.
 func (p *ProbesAPIv2) ByID(id string) *ProbeInstanceV2 {
 	return NewProbesInstanceV2(p.Client, id)
+}
+
+// Page sets the page number for pagination.
+func (p *ProbesAPIv2) Page(page int) *ProbesAPIv2 {
+	p.setParam("page", fmt.Sprintf("%d", page))
+	return p
+}
+
+// PerPage sets the number of items per page for pagination.
+func (p *ProbesAPIv2) PerPage(perPage int) *ProbesAPIv2 {
+	p.setParam("per_page", fmt.Sprintf("%d", perPage))
+	return p
+}
+
+// Scopes sets the scopes to filter by.
+func (p *ProbesAPIv2) Scopes(scopes ...string) *ProbesAPIv2 {
+	p.setParam("scopes", strings.Join(scopes, ","))
+	return p
+}
+
+// Sort sets the sorting key and order.
+func (p *ProbesAPIv2) Sort(sort, order string) *ProbesAPIv2 {
+	p.setParam("sort", sort+","+order)
+	return p
 }
 
 // ProbeInstanceV2 is the API for a single probe instance.
@@ -108,22 +137,22 @@ func NewProbesInstanceV2(c *client.Client, id string) *ProbeInstanceV2 {
 
 // Get retrieves a single probe by ID.
 func (p *ProbeInstanceV2) Get() (*APIv2Response, error) {
-	return do[APIv2Response](p.APIRequestHandler, "GET", p.BaseURL, nil)
+	return do[APIv2Response](p.APIRequestHandler, "GET", p.buildURL(), nil)
 }
 
 // Create creates a new probe.
 func (p *ProbeInstanceV2) Create(data map[string]interface{}) (*APIv2Response, error) {
-	return do[APIv2Response](p.APIRequestHandler, "POST", p.BaseURL, data)
+	return do[APIv2Response](p.APIRequestHandler, "POST", p.buildURL(), data)
 }
 
 // Update updates a probe.
 func (p *ProbeInstanceV2) Update(data map[string]interface{}) (*APIv2Response, error) {
-	return do[APIv2Response](p.APIRequestHandler, "PUT", p.BaseURL, data)
+	return do[APIv2Response](p.APIRequestHandler, "PUT", p.buildURL(), data)
 }
 
 // Delete deletes a probe.
 func (p *ProbeInstanceV2) Delete() (*APIv2Response, error) {
-	return do[APIv2Response](p.APIRequestHandler, "DELETE", p.BaseURL, nil)
+	return do[APIv2Response](p.APIRequestHandler, "DELETE", p.buildURL(), nil)
 }
 
 // Schedules retrieves the schedules for a probe.

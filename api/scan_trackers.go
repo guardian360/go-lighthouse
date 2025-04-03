@@ -1,6 +1,11 @@
 package api
 
-import "github.com/guardian360/go-lighthouse/client"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/guardian360/go-lighthouse/client"
+)
 
 // ScanTrackersAPI is the API for the scan trackers resource.
 type ScanTrackersAPIv2 struct {
@@ -19,17 +24,41 @@ func NewScanTrackersAPIv2(c *client.Client) *ScanTrackersAPIv2 {
 
 // Get retrieves a list of scan trackers.
 func (s *ScanTrackersAPIv2) Get() (*APIv2Response, error) {
-	return do[APIv2Response](s.APIRequestHandler, "GET", s.BaseURL, nil)
+	return do[APIv2Response](s.APIRequestHandler, "GET", s.buildURL(), nil)
 }
 
 // Create creates a scan tracker.
 func (s *ScanTrackersAPIv2) Create() (*APIv2Response, error) {
-	return do[APIv2Response](s.APIRequestHandler, "POST", s.BaseURL, nil)
+	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), nil)
 }
 
 // ID returns a ScanTrackerInstance with the provided ID.
 func (s *ScanTrackersAPIv2) ByID(id string) *ScanTrackerInstanceV2 {
 	return NewScanTrackerInstanceV2(s.Client, id)
+}
+
+// Page sets the page number for pagination.
+func (p *ScanTrackersAPIv2) Page(page int) *ScanTrackersAPIv2 {
+	p.setParam("page", fmt.Sprintf("%d", page))
+	return p
+}
+
+// PerPage sets the number of items per page for pagination.
+func (p *ScanTrackersAPIv2) PerPage(perPage int) *ScanTrackersAPIv2 {
+	p.setParam("per_page", fmt.Sprintf("%d", perPage))
+	return p
+}
+
+// Scopes sets the scopes to filter by.
+func (p *ScanTrackersAPIv2) Scopes(scopes ...string) *ScanTrackersAPIv2 {
+	p.setParam("scopes", strings.Join(scopes, ","))
+	return p
+}
+
+// Sort sets the sorting key and order.
+func (p *ScanTrackersAPIv2) Sort(sort, order string) *ScanTrackersAPIv2 {
+	p.setParam("sort", sort+","+order)
+	return p
 }
 
 // ScanTrackerInstance is the API for a single scan tracker.
@@ -50,17 +79,19 @@ func NewScanTrackerInstanceV2(c *client.Client, id string) *ScanTrackerInstanceV
 
 // Get retrieves a single scan tracker.
 func (s *ScanTrackerInstanceV2) Get() (*APIv2Response, error) {
-	return do[APIv2Response](s.APIRequestHandler, "GET", s.BaseURL, nil)
+	return do[APIv2Response](s.APIRequestHandler, "GET", s.buildURL(), nil)
 }
 
 // Start starts a scan tracker.
 func (s *ScanTrackerInstanceV2) Start() (*APIv2Response, error) {
-	return do[APIv2Response](s.APIRequestHandler, "POST", s.BaseURL+"/start", nil)
+	s.BaseURL = s.BaseURL + "/start"
+	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), nil)
 }
 
 // Stop stops a scan tracker.
 func (s *ScanTrackerInstanceV2) Stop() (*APIv2Response, error) {
-	return do[APIv2Response](s.APIRequestHandler, "POST", s.BaseURL+"/stop", nil)
+	s.BaseURL = s.BaseURL + "/stop"
+	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), nil)
 }
 
 // HostDiscoveries retrieves the host discoveries for a scan tracker.

@@ -1,6 +1,11 @@
 package api
 
-import "github.com/guardian360/go-lighthouse/client"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/guardian360/go-lighthouse/client"
+)
 
 // SchedulesAPIv1 is the API for the schedules resource.
 type SchedulesAPIv1 struct {
@@ -19,7 +24,7 @@ func NewSchedulesAPIv1(c *client.Client) *SchedulesAPIv1 {
 
 // Get retrieves a list of schedules.
 func (s *SchedulesAPIv1) Get() (*APIv1Response, error) {
-	return do[APIv1Response](s.APIRequestHandler, "GET", s.BaseURL, nil)
+	return do[APIv1Response](s.APIRequestHandler, "GET", s.buildURL(), nil)
 }
 
 // SchedulesAPIv2 is the API for the schedules resource.
@@ -39,5 +44,29 @@ func NewSchedulesAPIv2(c *client.Client) *SchedulesAPIv2 {
 
 // Get retrieves a list of schedules.
 func (s *SchedulesAPIv2) Get() (*APIv2Response, error) {
-	return do[APIv2Response](s.APIRequestHandler, "GET", s.BaseURL, nil)
+	return do[APIv2Response](s.APIRequestHandler, "GET", s.buildURL(), nil)
+}
+
+// Page sets the page number for pagination.
+func (p *SchedulesAPIv2) Page(page int) *SchedulesAPIv2 {
+	p.setParam("page", fmt.Sprintf("%d", page))
+	return p
+}
+
+// PerPage sets the number of items per page for pagination.
+func (p *SchedulesAPIv2) PerPage(perPage int) *SchedulesAPIv2 {
+	p.setParam("per_page", fmt.Sprintf("%d", perPage))
+	return p
+}
+
+// Scopes sets the scopes to filter by.
+func (p *SchedulesAPIv2) Scopes(scopes ...string) *SchedulesAPIv2 {
+	p.setParam("scopes", strings.Join(scopes, ","))
+	return p
+}
+
+// Sort sets the sorting key and order.
+func (p *SchedulesAPIv2) Sort(sort, order string) *SchedulesAPIv2 {
+	p.setParam("sort", sort+","+order)
+	return p
 }

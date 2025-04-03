@@ -19,7 +19,7 @@ func NewHeartbeatAPIv1(c *client.Client) *HeartbeatAPIv1 {
 
 // Get retrieves the API heartbeat response.
 func (h *HeartbeatAPIv1) Get() (*APIv1Response, error) {
-	return do[APIv1Response](h.APIRequestHandler, "GET", h.BaseURL, nil)
+	return do[APIv1Response](h.APIRequestHandler, "GET", h.buildURL(), nil)
 }
 
 // HeartbeatAPIv2 is the v2 API for the heartbeat resource.
@@ -39,5 +39,5 @@ func NewHeartbeatAPIv2(c *client.Client) *HeartbeatAPIv2 {
 
 // Get retrieves the API heartbeat response.
 func (h *HeartbeatAPIv2) Get() (*APIv2Response, error) {
-	return do[APIv2Response](h.APIRequestHandler, "GET", h.BaseURL, nil)
+	return do[APIv2Response](h.APIRequestHandler, "GET", h.buildURL(), nil)
 }
