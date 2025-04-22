@@ -29,7 +29,7 @@ func (r *APIRequestHandler) buildURL() string {
 }
 
 func do[T any](r APIRequestHandler, method, url string, data map[string]interface{}) (*T, error) {
-	resp, err := r.Client.Do(method, url, nil)
+	resp, err := r.Client.Do(method, url, data)
 	if err != nil {
 		return nil, err
 	}
