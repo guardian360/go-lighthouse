@@ -10,12 +10,18 @@ import (
 	"net/http"
 )
 
+// HttpClient is an interface that wraps the Do method of http.Client.
+type HttpClient interface {
+	// Do sends an HTTP request and returns an HTTP response.
+	Do(req *http.Request) (*http.Response, error)
+}
+
 // Client represents a Lighthouse API client.
 type Client struct {
 	// BaseURL is the base URL for the API.
 	BaseURL string
 	// Client is the HTTP client.
-	Client *http.Client
+	Client HttpClient
 	// OAuthClient is the OAuth client to use for authentication.
 	OAuthClient OAuthClient
 }
