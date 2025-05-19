@@ -94,6 +94,13 @@ func (s *ScanTrackerInstanceV2) Stop() (*APIv2Response, error) {
 	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), nil)
 }
 
+// AssociateScanObjects associates scan objects with a scan tracker.
+func (s *ScanTrackerInstanceV2) AssociateScanObjects(ids []string) (*APIv2Response, error) {
+	s.BaseURL = s.BaseURL + "/scanobjects"
+	payload := map[string]interface{}{"ids": ids}
+	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), payload)
+}
+
 // HostDiscoveries retrieves the host discoveries for a scan tracker.
 func (s *ScanTrackerInstanceV2) HostDiscoveries() *HostDiscoveriesAPIv2 {
 	hostDiscoveriesAPI := NewHostDiscoveriesAPIv2(s.Client)
