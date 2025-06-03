@@ -92,7 +92,7 @@ func (c *Client) Do(method, url string, params map[string]interface{}) (map[stri
 	if err != nil {
 		return nil, err
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	var result map[string]interface{}
 	dec := json.NewDecoder(resp.Body)
