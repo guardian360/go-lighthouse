@@ -6,7 +6,7 @@
 
 ## ⚠️🚧 Work in Progress 🚧⚠️
 
-**This project is still under active development.**  
+**This project is still under active development.**
 APIs and functionality may change, and certain features may not yet be fully
 implemented.
 
