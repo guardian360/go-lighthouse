@@ -28,7 +28,7 @@ func (s *ScanResultsAPIv2) Get() (*APIv2Response, error) {
 }
 
 // Upsert creates or updates a scan result.
-func (s *ScanResultsAPIv2) Upsert(data map[string]interface{}) (*APIv2Response, error) {
+func (s *ScanResultsAPIv2) Upsert(data APIRequestPayload) (*APIv2Response, error) {
 	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), data)
 }
 

@@ -7,6 +7,10 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
+// APIRequestPayload is the payload for API requests. It contains the data to
+// be sent in the request body.
+type APIRequestPayload map[string]interface{}
+
 // APIRequestHandler is the base resource for all API resources.
 type APIRequestHandler struct {
 	Client  *client.Client
@@ -28,7 +32,7 @@ func (r *APIRequestHandler) buildURL() string {
 	return r.BaseURL + "?" + r.params.Encode()
 }
 
-func do[T any](r APIRequestHandler, method, url string, data map[string]interface{}) (*T, error) {
+func do[T any](r APIRequestHandler, method, url string, data APIRequestPayload) (*T, error) {
 	resp, err := r.Client.Do(method, url, data)
 	if err != nil {
 		return nil, err

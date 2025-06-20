@@ -28,8 +28,8 @@ func (s *ScanTrackersAPIv2) Get() (*APIv2Response, error) {
 }
 
 // Create creates a scan tracker.
-func (s *ScanTrackersAPIv2) Create() (*APIv2Response, error) {
-	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), nil)
+func (s *ScanTrackersAPIv2) Create(data APIRequestPayload) (*APIv2Response, error) {
+	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), data)
 }
 
 // ID returns a ScanTrackerInstance with the provided ID.
@@ -97,7 +97,7 @@ func (s *ScanTrackerInstanceV2) Stop() (*APIv2Response, error) {
 // AssociateScanObjects associates scan objects with a scan tracker.
 func (s *ScanTrackerInstanceV2) AssociateScanObjects(ids []string) (*APIv2Response, error) {
 	s.BaseURL = s.BaseURL + "/scanobjects"
-	payload := map[string]interface{}{"ids": ids}
+	payload := APIRequestPayload{"ids": ids}
 	return do[APIv2Response](s.APIRequestHandler, "POST", s.buildURL(), payload)
 }
 

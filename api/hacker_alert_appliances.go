@@ -52,12 +52,12 @@ func (h *HackerAlertApplianceInstanceV1) Get() (*APIv1Response, error) {
 }
 
 // Create creates a new hacker alert appliance.
-func (h *HackerAlertApplianceInstanceV1) Create(data map[string]interface{}) (*APIv1Response, error) {
+func (h *HackerAlertApplianceInstanceV1) Create(data APIRequestPayload) (*APIv1Response, error) {
 	return do[APIv1Response](h.APIRequestHandler, "POST", h.buildURL(), data)
 }
 
 // Update updates a hacker alert appliance.
-func (h *HackerAlertApplianceInstanceV1) Update(data map[string]interface{}) (*APIv1Response, error) {
+func (h *HackerAlertApplianceInstanceV1) Update(data APIRequestPayload) (*APIv1Response, error) {
 	return do[APIv1Response](h.APIRequestHandler, "PUT", h.buildURL(), data)
 }
 

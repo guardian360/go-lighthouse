@@ -28,7 +28,7 @@ func (h *HostDiscoveriesAPIv2) Get() (*APIv2Response, error) {
 }
 
 // Upsert creates or updates a host discovery.
-func (h *HostDiscoveriesAPIv2) Upsert(data map[string]interface{}) (*APIv2Response, error) {
+func (h *HostDiscoveriesAPIv2) Upsert(data APIRequestPayload) (*APIv2Response, error) {
 	return do[APIv2Response](h.APIRequestHandler, "POST", h.buildURL(), data)
 }
 

@@ -55,12 +55,12 @@ func (p *ProbeInstanceV1) Get() (*APIv1Response, error) {
 }
 
 // Create creates a new probe.
-func (p *ProbeInstanceV1) Create(data map[string]interface{}) (*APIv1Response, error) {
+func (p *ProbeInstanceV1) Create(data APIRequestPayload) (*APIv1Response, error) {
 	return do[APIv1Response](p.APIRequestHandler, "POST", p.buildURL(), data)
 }
 
 // Update updates a probe.
-func (p *ProbeInstanceV1) Update(data map[string]interface{}) (*APIv1Response, error) {
+func (p *ProbeInstanceV1) Update(data APIRequestPayload) (*APIv1Response, error) {
 	return do[APIv1Response](p.APIRequestHandler, "PUT", p.buildURL(), data)
 }
 
@@ -141,12 +141,12 @@ func (p *ProbeInstanceV2) Get() (*APIv2Response, error) {
 }
 
 // Create creates a new probe.
-func (p *ProbeInstanceV2) Create(data map[string]interface{}) (*APIv2Response, error) {
+func (p *ProbeInstanceV2) Create(data APIRequestPayload) (*APIv2Response, error) {
 	return do[APIv2Response](p.APIRequestHandler, "POST", p.buildURL(), data)
 }
 
 // Update updates a probe.
-func (p *ProbeInstanceV2) Update(data map[string]interface{}) (*APIv2Response, error) {
+func (p *ProbeInstanceV2) Update(data APIRequestPayload) (*APIv2Response, error) {
 	return do[APIv2Response](p.APIRequestHandler, "PUT", p.buildURL(), data)
 }
 
