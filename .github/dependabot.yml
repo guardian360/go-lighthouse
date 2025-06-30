@@ -8,3 +8,4 @@ updates:
     commit-message:
       prefix: fix
       include: scope
+    target-branch: main
