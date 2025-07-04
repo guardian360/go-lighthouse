@@ -33,7 +33,8 @@ go get github.com/guardian360/go-lighthouse
 ### Creating a Client
 
 To interact with the Lighthouse API, you need to create a client using the
-`client.New` function. You can configure the client with the base URL.
+`client.New` function. You can configure the client with the base URL. Next,
+you can create an API instance using the `api.New` function.
 
 ```go
 package main
@@ -42,7 +43,7 @@ import (
     "fmt"
     "os"
 
-    "github.com/guardian360/go-lighthouse/api"
+    api "github.com/guardian360/go-lighthouse/api/v1"
     "github.com/guardian360/go-lighthouse/client"
 )
 
@@ -50,9 +51,10 @@ func main() {
     config := client.Config{
         BaseURL: "https://lighthouse.guardian360.nl",
     }
-    lighthouse := client.New(config)
+    clt := client.New(config)
+    lighthouse := api.New(clt)
 
-    response, err := api.V1(lighthouse).Heartbeat().Get()
+    response, err := lighthouse.Heartbeat().Get()
     if err != nil {
         fmt.Println("Error fetching heartbeat:", err)
         os.Exit(1)
