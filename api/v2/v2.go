@@ -1,38 +1,38 @@
-package api
+package v2
 
 import (
 	"github.com/guardian360/go-lighthouse/client"
 	"github.com/mitchellh/mapstructure"
 )
 
-// APIv2 is the representation of Lighthouse API v2. It is meant to be used as
+// API is the representation of Lighthouse API v2. It is meant to be used as
 // a namespace for all v2 API resources.
-type APIv2 struct {
+type API struct {
 	Client *client.Client
 }
 
-// V2 creates a new APIv2 instance.
-func V2(c *client.Client) *APIv2 {
-	return &APIv2{Client: c}
+// New creates a new API instance.
+func New(c *client.Client) *API {
+	return &API{Client: c}
 }
 
 // Heartbeat retrieves the heartbeat API.
-func (api *APIv2) Heartbeat() *HeartbeatAPIv2 {
-	return NewHeartbeatAPIv2(api.Client)
+func (api *API) Heartbeat() *HeartbeatAPI {
+	return NewHeartbeatAPI(api.Client)
 }
 
 // Probes retrieves the probes API.
-func (api *APIv2) Probes() *ProbesAPIv2 {
-	return NewProbesAPIv2(api.Client)
+func (api *API) Probes() *ProbesAPI {
+	return NewProbesAPI(api.Client)
 }
 
 // ScanTrackers retrieves the scan trackers API.
-func (api *APIv2) ScanTrackers() *ScanTrackersAPIv2 {
-	return NewScanTrackersAPIv2(api.Client)
+func (api *API) ScanTrackers() *ScanTrackersAPI {
+	return NewScanTrackersAPI(api.Client)
 }
 
-// APIv2Response is the response wrapper for API v2.
-type APIv2Response struct {
+// APIResponse is the response wrapper for API v2.
+type APIResponse struct {
 	Data  interface{} `json:"data"`
 	Links struct {
 		First string `json:"first"`
@@ -57,6 +57,6 @@ type APIv2Response struct {
 }
 
 // Decode decodes the Data field into the provided struct.
-func (r *APIv2Response) Decode(v interface{}) error {
+func (r *APIResponse) Decode(v interface{}) error {
 	return mapstructure.Decode(r.Data, v)
 }
