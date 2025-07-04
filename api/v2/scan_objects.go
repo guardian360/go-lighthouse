@@ -40,6 +40,12 @@ func (p *ScanObjectsAPI) PerPage(perPage int) *ScanObjectsAPI {
 	return p
 }
 
+// With sets the relationships to include in the response.
+func (p *ScanObjectsAPI) With(relationships ...string) *ScanObjectsAPI {
+	p.SetParam("with", strings.Join(relationships, ","))
+	return p
+}
+
 // Scopes sets the scopes to filter by.
 func (p *ScanObjectsAPI) Scopes(scopes ...string) *ScanObjectsAPI {
 	p.SetParam("scopes", strings.Join(scopes, ","))
