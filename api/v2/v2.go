@@ -25,7 +25,7 @@ func (api *API) Probes() *ProbesAPI {
 	return NewProbesAPI(api.Client)
 }
 
-// Probe retrieves the probe API.
+// Probe retrieves the probe API for a specific ID.
 func (api *API) Probe(id string) *ProbeAPI {
 	return NewProbeAPI(api.Client, id)
 }
@@ -33,6 +33,31 @@ func (api *API) Probe(id string) *ProbeAPI {
 // ScanTrackers retrieves the scan trackers API.
 func (api *API) ScanTrackers() *ScanTrackersAPI {
 	return NewScanTrackersAPI(api.Client)
+}
+
+// ScanTracker retrieves the scan tracker API for a specific ID.
+func (api *API) ScanTracker(id string) *ScanTrackerAPI {
+	return NewScanTrackerAPI(api.Client, id)
+}
+
+// HostDiscoveries retrieves the host discoveries API.
+func (api *API) HostDiscoveries() *HostDiscoveriesAPI {
+	return NewHostDiscoveriesAPI(api.Client)
+}
+
+// HostDiscovery retrieves the host discovery API for a specific ID.
+func (api *API) HostDiscovery(id string) *HostDiscoveryAPI {
+	return NewHostDiscoveryAPI(api.Client, id)
+}
+
+// ScanResults retrieves the scan results API.
+func (api *API) ScanResults() *ScanResultsAPI {
+	return NewScanResultsAPI(api.Client)
+}
+
+// ScanResult retrieves the scan result API for a specific ID.
+func (api *API) ScanResult(id string) *ScanResultAPI {
+	return NewScanResultAPI(api.Client, id)
 }
 
 // APIResponse is the response wrapper for API v2.
