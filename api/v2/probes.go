@@ -99,8 +99,7 @@ func (p *ProbesAPI) ByID(id string) *ProbeAPI {
 
 // Find retrieves a single probe by its ID.
 func (p *ProbesAPI) Find(id string) (*ProbeAPIResponse, error) {
-	probeAPI := NewProbeAPI(p.Client, id)
-	return probeAPI.Get()
+	return p.ByID(id).Get()
 }
 
 // Create creates a new probe.
