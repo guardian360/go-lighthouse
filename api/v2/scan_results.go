@@ -118,8 +118,8 @@ func NewScanResultsAPI(c *client.Client) *ScanResultsAPI {
 }
 
 // Get retrieves a list of scan results.
-func (s *ScanResultsAPI) Get() (*APIResponse, error) {
-	return api.Do[APIResponse](s.APIRequestHandler, "GET", s.BuildURL(), nil)
+func (s *ScanResultsAPI) Get() (*ScanResultsAPIResponse, error) {
+	return api.Do[ScanResultsAPIResponse](s.APIRequestHandler, "GET", s.BuildURL(), nil)
 }
 
 // ByID creates a new ScanResultAPI instance for a specific scan result
@@ -133,8 +133,8 @@ func (s *ScanResultsAPI) Find(id string) (*ScanResultAPIResponse, error) {
 }
 
 // Upsert creates or updates a scan result.
-func (s *ScanResultsAPI) Upsert(data api.APIRequestPayload) (*APIResponse, error) {
-	return api.Do[APIResponse](s.APIRequestHandler, "POST", s.BuildURL(), data)
+func (s *ScanResultsAPI) Upsert(data api.APIRequestPayload) (*ScanResultAPIResponse, error) {
+	return api.Do[ScanResultAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), data)
 }
 
 // Page sets the page number for pagination.
