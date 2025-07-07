@@ -25,6 +25,11 @@ func (api *API) Probes() *ProbesAPI {
 	return NewProbesAPI(api.Client)
 }
 
+// Probe retrieves the probe API.
+func (api *API) Probe(id string) *ProbeAPI {
+	return NewProbeAPI(api.Client, id)
+}
+
 // ScanTrackers retrieves the scan trackers API.
 func (api *API) ScanTrackers() *ScanTrackersAPI {
 	return NewScanTrackersAPI(api.Client)
