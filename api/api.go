@@ -42,11 +42,9 @@ func Do[T any](r APIRequestHandler, method, url string, data APIRequestPayload) 
 	if err != nil {
 		return nil, err
 	}
-
-	var decodedResponse T
-	if err := mapstructure.Decode(resp, &decodedResponse); err != nil {
+	var decoded T
+	if err := mapstructure.Decode(resp, &decoded); err != nil {
 		return nil, err
 	}
-
-	return &decodedResponse, nil
+	return &decoded, nil
 }
