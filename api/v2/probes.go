@@ -40,8 +40,6 @@ type Probe struct {
 	DNS3 string `json:"dns3"`
 	// ImageLocation is the location of the probe's image archive file.
 	ImageLocation string `json:"image_location"`
-	// ArchivePassword is the password for the probe's image archive file.
-	// ArchivePassword string `json:"archive_password"`
 	// Status is the current status of the probe (e.g., online, offline).
 	Status string `json:"status"`
 	// CPUCores is the number of CPU cores allocated to the probe.
