@@ -43,24 +43,24 @@ import (
     "fmt"
     "os"
 
-    api "github.com/guardian360/go-lighthouse/api/v1"
+    api "github.com/guardian360/go-lighthouse/api/v2"
     "github.com/guardian360/go-lighthouse/client"
 )
 
 func main() {
-    config := client.Config{
+    cfg := client.Config{
         BaseURL: "https://lighthouse.guardian360.nl",
     }
-    clt := client.New(config)
+    clt := client.New(cfg)
     lighthouse := api.New(clt)
 
-    response, err := lighthouse.Heartbeat().Get()
+    response, err := lighthouse.Health().Get()
     if err != nil {
-        fmt.Println("Error fetching heartbeat:", err)
+        fmt.Println("Error fetching health:", err)
         os.Exit(1)
     }
 
-    fmt.Printf("Lighthouse API heartbeat response: %+v\n", response)
+    fmt.Printf("Lighthouse API response: %+v\n", response)
 }
 ```
 
@@ -79,27 +79,28 @@ import (
     "fmt"
     "os"
 
-    "github.com/guardian360/go-lighthouse/api"
+    api "github.com/guardian360/go-lighthouse/api/v2"
     "github.com/guardian360/go-lighthouse/client"
 )
 
 func main() {
-    config := client.Config{
+    cfg := client.Config{
         BaseURL: "https://lighthouse.guardian360.nl",
     }
-    lighthouse := client.New(config).WithOAuth(&client.ClientCredentialsGrant{
-        TokenURL: config.BaseURL + "/oauth/token",
+    clt := client.New(cfg).WithOAuth(&client.ClientCredentialsGrant{
+        TokenURL: cfg.BaseURL + "/oauth/token",
         ClientID: "client_id",
         ClientSecret: "client_secret",
     })
+    lighthouse := api.New(clt)
 
-    response, err := api.V1(lighthouse).Probes().Get()
+    resp, err := lighthouse.Probes().Get()
     if err != nil {
         fmt.Println("Error fetching probes:", err)
         os.Exit(1)
     }
 
-    fmt.Printf("Lighthouse API probes response: %+v\n", response)
+    fmt.Printf("Lighthouse API response: %+v\n", resp)
 }
 ```
 
