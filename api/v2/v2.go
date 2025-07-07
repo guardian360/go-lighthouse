@@ -68,5 +68,5 @@ type APIResponseMetaLink struct {
 
 // Decode decodes the Data field into the provided struct.
 func (r *APIResponse) Decode(v interface{}) error {
-	return mapstructure.Decode(r.Data, v)
+	return mapstructure.Decode(r, v)
 }
