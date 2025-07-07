@@ -103,6 +103,7 @@ func (p *ScanTrackersAPI) Sort(sort, order string) *ScanTrackersAPI {
 // ScanTrackerAPI is the API for a specific scan tracker.
 type ScanTrackerAPI struct {
 	api.APIRequestHandler
+	// ID is the unique identifier for the scan tracker.
 	ID string
 }
 
