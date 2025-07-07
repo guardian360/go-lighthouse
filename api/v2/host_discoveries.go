@@ -13,6 +13,42 @@ type HostDiscoveriesAPI struct {
 	api.APIRequestHandler
 }
 
+// HostDiscoveriesAPIResponse is the response structure for the host
+// discoveries API.
+type HostDiscoveriesAPIResponse struct {
+	// Data contains the list of host discoveries.
+	Data []HostDiscovery `json:"data"`
+	// Links contains pagination and other links.
+	Links APIResponseLinks `json:"links,omitempty"`
+	// Meta contains metadata about the response.
+	Meta APIResponseMeta `json:"meta,omitempty"`
+}
+
+// HostDiscoveryAPIResponse is the response structure for a single host
+// discovery.
+type HostDiscoveryAPIResponse struct {
+	// Data contains the host discovery details.
+	Data HostDiscovery `json:"data"`
+}
+
+// HostDiscovery represents a host discovery in the Lighthouse API.
+type HostDiscovery struct {
+	// ID is the unique identifier for the host discovery.
+	ID string `json:"id"`
+	// Host is the hostname or IP address of the discovered host.
+	Host string `json:"host"`
+	// IP is the IP address of the discovered host.
+	IP string `json:"ip"`
+	// Ports is a list of ports that were discovered open on the host.
+	Ports []string `json:"ports"`
+	// Confidence is the confidence level of the discovery.
+	Confidence int `json:"confidence"`
+	// CreatedAt is the timestamp when the discovery was created.
+	CreatedAt string `json:"created_at"`
+	// UpdatedAt is the timestamp when the discovery was last updated.
+	UpdatedAt string `json:"updated_at"`
+}
+
 // NewHostDiscoveriesAPI creates a new HostDiscoveriesAPI instance.
 func NewHostDiscoveriesAPI(c *client.Client) *HostDiscoveriesAPI {
 	return &HostDiscoveriesAPI{
@@ -24,13 +60,13 @@ func NewHostDiscoveriesAPI(c *client.Client) *HostDiscoveriesAPI {
 }
 
 // Get retrieves a list of host discoveries.
-func (h *HostDiscoveriesAPI) Get() (*APIResponse, error) {
-	return api.Do[APIResponse](h.APIRequestHandler, "GET", h.BuildURL(), nil)
+func (h *HostDiscoveriesAPI) Get() (*HostDiscoveriesAPIResponse, error) {
+	return api.Do[HostDiscoveriesAPIResponse](h.APIRequestHandler, "GET", h.BuildURL(), nil)
 }
 
 // Upsert creates or updates a host discovery.
-func (h *HostDiscoveriesAPI) Upsert(data api.APIRequestPayload) (*APIResponse, error) {
-	return api.Do[APIResponse](h.APIRequestHandler, "POST", h.BuildURL(), data)
+func (h *HostDiscoveriesAPI) Upsert(data api.APIRequestPayload) (*HostDiscoveryAPIResponse, error) {
+	return api.Do[HostDiscoveryAPIResponse](h.APIRequestHandler, "POST", h.BuildURL(), data)
 }
 
 // Page sets the page number for pagination.
