@@ -92,7 +92,7 @@ func (p *ProbesAPI) Get() (*ProbesAPIResponse, error) {
 	return api.Do[ProbesAPIResponse](p.APIRequestHandler, "GET", p.BuildURL(), nil)
 }
 
-// ByID retrieves a specific probe by its ID.
+// ByID creates a new ProbeAPI instance for a specific probe.
 func (p *ProbesAPI) ByID(id string) *ProbeAPI {
 	return NewProbeAPI(p.Client, id)
 }
