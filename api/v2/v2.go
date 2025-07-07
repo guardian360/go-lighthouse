@@ -33,27 +33,37 @@ func (api *API) ScanTrackers() *ScanTrackersAPI {
 
 // APIResponse is the response wrapper for API v2.
 type APIResponse struct {
-	Data  interface{} `json:"data"`
-	Links struct {
-		First string `json:"first"`
-		Last  string `json:"last"`
-		Prev  string `json:"prev"`
-		Next  string `json:"next"`
-	} `json:"links,omitempty"`
-	Meta struct {
-		CurrentPage int `json:"current_page"`
-		From        int `json:"from"`
-		LastPage    int `json:"last_page"`
-		Links       []struct {
-			URL    string `json:"url"`
-			Label  string `json:"label"`
-			Active bool   `json:"active"`
-		} `json:"links"`
-		Path    string `json:"path"`
-		PerPage int    `json:"per_page"`
-		To      int    `json:"to"`
-		Total   int    `json:"total"`
-	} `json:"meta,omitempty"`
+	Data  interface{}      `json:"data"`
+	Links APIResponseLinks `json:"links,omitempty"`
+	Meta  APIResponseMeta  `json:"meta,omitempty"`
+}
+
+// APIResponseLinks contains pagination links for the API response.
+type APIResponseLinks struct {
+	First string `json:"first"`
+	Last  string `json:"last"`
+	Prev  string `json:"prev"`
+	Next  string `json:"next"`
+}
+
+// APIResponseMeta contains metadata about the API response, such as pagination
+// information.
+type APIResponseMeta struct {
+	CurrentPage int                   `json:"current_page"`
+	From        int                   `json:"from"`
+	LastPage    int                   `json:"last_page"`
+	Links       []APIResponseMetaLink `json:"links"`
+	Path        string                `json:"path"`
+	PerPage     int                   `json:"per_page"`
+	To          int                   `json:"to"`
+	Total       int                   `json:"total"`
+}
+
+// APIResponseMetaLink represents a link in the metadata of the API response.
+type APIResponseMetaLink struct {
+	URL    string `json:"url"`
+	Label  string `json:"label"`
+	Active bool   `json:"active"`
 }
 
 // Decode decodes the Data field into the provided struct.
