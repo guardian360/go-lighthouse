@@ -61,16 +61,6 @@ func (s *ScanTrackersAPI) Get() (*ScanTrackersAPIResponse, error) {
 	return api.Do[ScanTrackersAPIResponse](s.APIRequestHandler, "GET", s.BuildURL(), nil)
 }
 
-// ByID creates a new ScanTrackerAPI for a specific scan tracker.
-func (s *ScanTrackersAPI) ByID(id string) *ScanTrackerAPI {
-	return NewScanTrackerAPI(s.Client, id)
-}
-
-// Find retrieves a single scan tracker by its ID.
-func (s *ScanTrackersAPI) Find(id string) (*ScanTrackerAPIResponse, error) {
-	return s.ByID(id).Get()
-}
-
 // Create creates a scan tracker.
 func (s *ScanTrackersAPI) Create(data api.APIRequestPayload) (*ScanTrackerAPIResponse, error) {
 	return api.Do[ScanTrackerAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), data)

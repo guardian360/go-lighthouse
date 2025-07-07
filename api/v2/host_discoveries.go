@@ -57,17 +57,6 @@ func (h *HostDiscoveriesAPI) Get() (*HostDiscoveriesAPIResponse, error) {
 	return api.Do[HostDiscoveriesAPIResponse](h.APIRequestHandler, "GET", h.BuildURL(), nil)
 }
 
-// ByID creates a new HostDiscoveryAPI instance for a specific host
-// discovery.
-func (h *HostDiscoveriesAPI) ByID(id string) *HostDiscoveryAPI {
-	return NewHostDiscoveryAPI(h.Client, id)
-}
-
-// Find retrieves a single host discovery by its ID.
-func (h *HostDiscoveriesAPI) Find(id string) (*HostDiscoveryAPIResponse, error) {
-	return h.ByID(id).Get()
-}
-
 // Upsert creates or updates a host discovery.
 func (h *HostDiscoveriesAPI) Upsert(data api.APIRequestPayload) (*HostDiscoveryAPIResponse, error) {
 	return api.Do[HostDiscoveryAPIResponse](h.APIRequestHandler, "POST", h.BuildURL(), data)

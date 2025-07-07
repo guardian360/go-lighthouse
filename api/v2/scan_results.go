@@ -122,16 +122,6 @@ func (s *ScanResultsAPI) Get() (*ScanResultsAPIResponse, error) {
 	return api.Do[ScanResultsAPIResponse](s.APIRequestHandler, "GET", s.BuildURL(), nil)
 }
 
-// ByID creates a new ScanResultAPI instance for a specific scan result
-func (s *ScanResultsAPI) ByID(id string) *ScanResultAPI {
-	return NewScanResultAPI(s.Client, id)
-}
-
-// Find retrieves a single scan result by its ID.
-func (s *ScanResultsAPI) Find(id string) (*ScanResultAPIResponse, error) {
-	return s.ByID(id).Get()
-}
-
 // Upsert creates or updates a scan result.
 func (s *ScanResultsAPI) Upsert(data api.APIRequestPayload) (*ScanResultAPIResponse, error) {
 	return api.Do[ScanResultAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), data)

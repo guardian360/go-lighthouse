@@ -68,16 +68,6 @@ func (s *ScanObjectsAPI) Get() (*ScanObjectsAPIResponse, error) {
 	return api.Do[ScanObjectsAPIResponse](s.APIRequestHandler, "GET", s.BuildURL(), nil)
 }
 
-// ByID retrieves a specific scan object by its ID.
-func (s *ScanObjectsAPI) ByID(id string) *ScanObjectAPI {
-	return NewScanObjectAPI(s.Client, id)
-}
-
-// Find retrieves a single scan object by its ID.
-func (s *ScanObjectsAPI) Find(id string) (*ScanObjectAPIResponse, error) {
-	return s.ByID(id).Get()
-}
-
 // Create creates a new scan object.
 func (s *ScanObjectsAPI) Create(data api.APIRequestPayload) (*ScanObjectAPIResponse, error) {
 	return api.Do[ScanObjectAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), data)

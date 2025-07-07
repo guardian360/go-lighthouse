@@ -92,16 +92,6 @@ func (p *ProbesAPI) Get() (*ProbesAPIResponse, error) {
 	return api.Do[ProbesAPIResponse](p.APIRequestHandler, "GET", p.BuildURL(), nil)
 }
 
-// ByID creates a new ProbeAPI instance for a specific probe.
-func (p *ProbesAPI) ByID(id string) *ProbeAPI {
-	return NewProbeAPI(p.Client, id)
-}
-
-// Find retrieves a single probe by its ID.
-func (p *ProbesAPI) Find(id string) (*ProbeAPIResponse, error) {
-	return p.ByID(id).Get()
-}
-
 // Create creates a new probe.
 func (p *ProbesAPI) Create(data api.APIRequestPayload) (*ProbeAPIResponse, error) {
 	return api.Do[ProbeAPIResponse](p.APIRequestHandler, "POST", p.BuildURL(), data)
