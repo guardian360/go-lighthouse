@@ -5,9 +5,20 @@ import (
 	"github.com/guardian360/go-lighthouse/client"
 )
 
-// HeartbeatAPIv2 is the v1 API for the heartbeat resource.
+// HeartbeatAPI represents the API handler for the Lighthouse heartbeat
+// endpoint.
 type HeartbeatAPI struct {
 	api.APIRequestHandler
+}
+
+// HeartbeatAPIResponse represents the response structure for the heartbeat API.
+type HeartbeatAPIResponse struct {
+	// Data contains the heartbeat data.
+	Data string `json:"data"`
+	// Message is a message returned by the API.
+	Message string `json:"message"`
+	// Success indicates whether the API call was successful.
+	Success bool `json:"success"`
 }
 
 // NewHeartbeatAPI creates a new HeartbeatAPI instance.
@@ -21,6 +32,6 @@ func NewHeartbeatAPI(c *client.Client) *HeartbeatAPI {
 }
 
 // Get retrieves the API heartbeat response.
-func (h *HeartbeatAPI) Get() (*APIResponse, error) {
-	return api.Do[APIResponse](h.APIRequestHandler, "GET", h.BuildURL(), nil)
+func (h *HeartbeatAPI) Get() (*HeartbeatAPIResponse, error) {
+	return api.Do[HeartbeatAPIResponse](h.APIRequestHandler, "GET", h.BuildURL(), nil)
 }
