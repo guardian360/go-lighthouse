@@ -15,9 +15,9 @@ func New(c *client.Client) *API {
 	return &API{Client: c}
 }
 
-// Heartbeat retrieves the heartbeat API.
-func (api *API) Heartbeat() *HeartbeatAPI {
-	return NewHeartbeatAPI(api.Client)
+// Health retrieves the health API.
+func (api *API) Health() *HealthAPI {
+	return NewHealthAPI(api.Client)
 }
 
 // Probes retrieves the probes API.
