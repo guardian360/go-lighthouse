@@ -2,10 +2,10 @@
 package api
 
 import (
+	"encoding/json"
 	"net/url"
 
 	"github.com/guardian360/go-lighthouse/client"
-	"github.com/mitchellh/mapstructure"
 )
 
 // APIRequestPayload is the payload for API requests. It contains the data to
@@ -42,8 +42,12 @@ func Do[T any](r APIRequestHandler, method, url string, data APIRequestPayload) 
 	if err != nil {
 		return nil, err
 	}
+	bytes, err := json.Marshal(resp)
+	if err != nil {
+		return nil, err
+	}
 	var decoded T
-	if err := mapstructure.Decode(resp, &decoded); err != nil {
+	if err := json.Unmarshal(bytes, &decoded); err != nil {
 		return nil, err
 	}
 	return &decoded, nil
