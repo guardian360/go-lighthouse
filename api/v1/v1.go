@@ -2,7 +2,6 @@ package v1
 
 import (
 	"github.com/guardian360/go-lighthouse/client"
-	"github.com/mitchellh/mapstructure"
 )
 
 // API is the representation of Lighthouse API v1. It is meant to be used as
@@ -41,9 +40,4 @@ type APIResponse struct {
 	Success bool        `json:"success"`
 	Message string      `json:"message"`
 	Data    interface{} `json:"data"`
-}
-
-// Decode decodes the Data field into the provided struct.
-func (r *APIResponse) Decode(v interface{}) error {
-	return mapstructure.Decode(r.Data, v)
 }

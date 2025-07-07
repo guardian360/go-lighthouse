@@ -2,7 +2,6 @@ package v2
 
 import (
 	"github.com/guardian360/go-lighthouse/client"
-	"github.com/mitchellh/mapstructure"
 )
 
 // API is the representation of Lighthouse API v2. It is meant to be used as
@@ -64,9 +63,4 @@ type APIResponseMetaLink struct {
 	URL    string `json:"url"`
 	Label  string `json:"label"`
 	Active bool   `json:"active"`
-}
-
-// Decode decodes the Data field into the provided struct.
-func (r *APIResponse) Decode(v interface{}) error {
-	return mapstructure.Decode(r, v)
 }
