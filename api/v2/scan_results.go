@@ -33,7 +33,7 @@ type ScanResult struct {
 	// Host is the hostname or IP address of the scan result.
 	Host string `json:"host"`
 	// Port is the port number associated with the scan result.
-	Port int `json:"port"`
+	Port string `json:"port"`
 	// Scheme is the scheme used for the scan result (e.g., "http", "https").
 	Scheme string `json:"scheme"`
 	// URL is the URL of the scan result, if applicable.
@@ -62,7 +62,7 @@ type ScanResult struct {
 	// CURLCommand is the cURL command used for the scan result, if applicable.
 	CURLCommand string `json:"curl_command"`
 	// MatcherStatus indicates the status of the matcher for the scan result.
-	MatcherStatus int `json:"matcher_status"`
+	MatcherStatus bool `json:"matcher_status"`
 	// Lines is the number of lines in the scan result, if applicable.
 	Lines int `json:"lines"`
 	// GlobalMatchers is a list of global matchers associated with the scan
