@@ -14,7 +14,7 @@ type HeartbeatAPI struct {
 // HeartbeatAPIResponse represents the response structure for the heartbeat API.
 type HeartbeatAPIResponse struct {
 	// Data contains the heartbeat data.
-	Data string `json:"data"`
+	Data []interface{} `json:"data"`
 	// Message is a message returned by the API.
 	Message string `json:"message"`
 	// Success indicates whether the API call was successful.
