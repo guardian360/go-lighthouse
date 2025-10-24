@@ -152,3 +152,10 @@ func (s *ScanTrackerAPI) ScanResults() *ScanResultsAPI {
 	scanResultsAPI.BaseURL = s.BaseURL + "/scan-results"
 	return scanResultsAPI
 }
+
+// CrawledURLs retrieves the crawled URLs for a scan tracker.
+func (s *ScanTrackerAPI) CralwedURLs() *CrawledURLsAPI {
+	crawledURLsAPI := NewCrawledURLsAPI(s.Client)
+	crawledURLsAPI.BaseURL = s.BaseURL + "/crawled-urls"
+	return crawledURLsAPI
+}

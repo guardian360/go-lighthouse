@@ -60,6 +60,16 @@ func (api *API) ScanResult(id string) *ScanResultAPI {
 	return NewScanResultAPI(api.Client, id)
 }
 
+// CrawledURLs retrieves the crawled URLs API.
+func (api *API) CrawledURLs() *CrawledURLsAPI {
+	return NewCrawledURLsAPI(api.Client)
+}
+
+// CrawledURL retrieves the crawled URL API for a specific ID.
+func (api *API) CrawledURL(id string) *CrawledURLAPI {
+	return NewCrawledURLAPI(api.Client, id)
+}
+
 // APIResponse is the response wrapper for API v2.
 type APIResponse struct {
 	Data  interface{}      `json:"data"`
