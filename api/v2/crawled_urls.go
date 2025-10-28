@@ -13,11 +13,11 @@ type CrawledURL struct {
 	// ID is the unique identifier for the crawled URL.
 	ID string `json:"id"`
 	// URL is the URL of the crawled URL.
-	URL string `json:"url"`
+	Timestamp string `json:"timestamp"`
 	// Request is the request that was made to discover the crawled URL.
-	Request string `json:"request"`
+	Request map[string]interface{} `json:"request"`
 	// Response is the response from the request made to the crawled URL.
-	Response string `json:"response"`
+	Response map[string]interface{} `json:"response"`
 	// Error is the error message of the crawled URL, if applicable.
 	Error string `json:"error"`
 }
