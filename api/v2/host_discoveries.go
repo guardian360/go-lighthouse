@@ -17,7 +17,11 @@ type HostDiscovery struct {
 	// IP is the IP address of the discovered host.
 	IP string `json:"ip"`
 	// Ports is a list of ports that were discovered open on the host.
-	Ports []string `json:"ports"`
+	Ports []struct {
+		Port     int    `json:"port"`
+		Protocol string `json:"protocol"`
+		TLS      bool   `json:"tls"`
+	} `json:"ports"`
 	// Confidence is the confidence level of the discovery.
 	Confidence int `json:"confidence"`
 	// CreatedAt is the timestamp when the discovery was created.
