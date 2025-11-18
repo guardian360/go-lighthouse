@@ -6,6 +6,7 @@ import (
 
 	"github.com/guardian360/go-lighthouse/api"
 	"github.com/guardian360/go-lighthouse/client"
+	"github.com/projectdiscovery/interactsh/pkg/server"
 )
 
 // ScanResult represents a scan result in the Lighthouse API.
@@ -58,7 +59,7 @@ type ScanResult struct {
 	Timestamp string `json:"timestamp"`
 	// Interaction is the interaction associated with the scan result, if
 	// applicable.
-	Interaction string `json:"interaction"`
+	Interaction *server.Interaction `json:"interaction"`
 	// CURLCommand is the cURL command used for the scan result, if applicable.
 	CURLCommand string `json:"curl_command"`
 	// MatcherStatus indicates the status of the matcher for the scan result.
