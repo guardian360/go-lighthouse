@@ -20,7 +20,7 @@ type ScanTracker struct {
 	// ProbeID is the ID of the probe associated with the scan tracker.
 	ProbeID string `json:"probe_id"`
 	// Type is the type of the scan tracker (0 for scheduled, 1 for rescan).
-	Type int `json:"type"`
+	Type string `json:"type"`
 	// StartedAt is the timestamp when the scan tracker was started.
 	StartedAt string `json:"started_at"`
 	// StoppedAt is the timestamp when the scan tracker was stopped, if applicable.
