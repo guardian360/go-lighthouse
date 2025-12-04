@@ -100,7 +100,7 @@ func NewCrawledURLAPI(c *client.Client, id string) *CrawledURLAPI {
 	return &CrawledURLAPI{
 		APIRequestHandler: api.APIRequestHandler{
 			Client:  c,
-			BaseURL: c.BaseURL + "/api/v2/host-discoveries/" + id,
+			BaseURL: c.BaseURL + "/api/v2/crawled-urls/" + id,
 		},
 		ID: id,
 	}
