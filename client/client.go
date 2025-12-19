@@ -94,14 +94,28 @@ func (c *Client) Do(method, url string, params map[string]interface{}) (map[stri
 	}
 	defer func() { _ = resp.Body.Close() }()
 
-	var result map[string]interface{}
-	dec := json.NewDecoder(resp.Body)
-	if err := dec.Decode(&result); err != nil {
-		return nil, err
+	// Read the response body first
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
+	// Check status code before attempting JSON decode
 	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-		return nil, fmt.Errorf("%s\n\n%s", resp.Status, result["message"].(string))
+		return nil, &APIError{
+			StatusCode: resp.StatusCode,
+			Status:     resp.Status,
+			Method:     method,
+			URL:        url,
+			Body:       truncateBody(string(body)),
+		}
+	}
+
+	// Try to decode JSON response
+	var result map[string]interface{}
+	if err := json.Unmarshal(body, &result); err != nil {
+		return nil, fmt.Errorf("failed to decode JSON response from %s %s: %w (body: %s)",
+			method, url, err, truncateBody(string(body)))
 	}
 
 	return result, nil
