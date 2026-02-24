@@ -21,6 +21,8 @@ type ScanTracker struct {
 	ProbeID string `json:"probe_id"`
 	// Type is the type of the scan tracker (0 for scheduled, 1 for rescan).
 	Type string `json:"type"`
+	// RescanTargets contains the rescan targets, included via ?with=rescan-targets.
+	RescanTargets []RescanTarget `json:"rescanTargets,omitempty"`
 	// StartedAt is the timestamp when the scan tracker was started.
 	StartedAt string `json:"started_at"`
 	// StoppedAt is the timestamp when the scan tracker was stopped, if applicable.
@@ -29,6 +31,17 @@ type ScanTracker struct {
 	CreatedAt string `json:"created_at"`
 	// UpdatedAt is the timestamp when the scan tracker was last updated.
 	UpdatedAt string `json:"updated_at"`
+}
+
+// RescanTarget represents a target for a rescan operation, included as a
+// relationship on ScanTracker via ?with=rescan-targets.
+type RescanTarget struct {
+	ID           int    `json:"id"`
+	ScanObjectID string `json:"scanobject_id"`
+	Target       string `json:"target"`
+	Template     string `json:"template"`
+	CreatedAt    string `json:"created_at"`
+	UpdatedAt    string `json:"updated_at"`
 }
 
 // ScanTrackersAPI is the API for the scan trackers resource.
