@@ -97,6 +97,12 @@ func (p *ScanTrackersAPI) Scopes(scopes ...string) *ScanTrackersAPI {
 	return p
 }
 
+// With sets the relationships to include in the response.
+func (p *ScanTrackersAPI) With(relationships ...string) *ScanTrackersAPI {
+	p.SetParam("with", strings.Join(relationships, ","))
+	return p
+}
+
 // Sort sets the sorting key and order.
 func (p *ScanTrackersAPI) Sort(sort, order string) *ScanTrackersAPI {
 	p.SetParam("sort", sort+","+order)
