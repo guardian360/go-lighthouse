@@ -31,6 +31,8 @@ type ScanTracker struct {
 	CreatedAt string `json:"created_at"`
 	// UpdatedAt is the timestamp when the scan tracker was last updated.
 	UpdatedAt string `json:"updated_at"`
+	// Error contains the error message if the scan failed.
+	Error string `json:"error,omitempty"`
 }
 
 // RescanTarget represents a target for a rescan operation, included as a
@@ -149,6 +151,11 @@ func (s *ScanTrackerAPI) Start() (*ScanTrackerAPIResponse, error) {
 func (s *ScanTrackerAPI) Stop() (*ScanTrackerAPIResponse, error) {
 	s.BaseURL = s.BaseURL + "/stop"
 	return api.Do[ScanTrackerAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), nil)
+}
+
+// Update updates a scan tracker with the given payload.
+func (s *ScanTrackerAPI) Update(data api.APIRequestPayload) (*ScanTrackerAPIResponse, error) {
+	return api.Do[ScanTrackerAPIResponse](s.APIRequestHandler, "PATCH", s.BuildURL(), data)
 }
 
 // AssociateScanObjects associates scan objects with a scan tracker.
