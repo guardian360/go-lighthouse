@@ -70,6 +70,16 @@ func (api *API) CrawledURL(id string) *CrawledURLAPI {
 	return NewCrawledURLAPI(api.Client, id)
 }
 
+// ScannerPlatforms retrieves the scanner platforms API.
+func (api *API) ScannerPlatforms() *ScannerPlatformsAPI {
+	return NewScannerPlatformsAPI(api.Client)
+}
+
+// ScannerPlatform retrieves the scanner platform API for a specific ID.
+func (api *API) ScannerPlatform(id string) *ScannerPlatformAPI {
+	return NewScannerPlatformAPI(api.Client, id)
+}
+
 // APIResponse is the response wrapper for API v2.
 type APIResponse struct {
 	Data  interface{}      `json:"data"`
