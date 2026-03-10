@@ -12,10 +12,6 @@ import (
 type Probe struct {
 	// ID is the unique identifier for the probe.
 	ID string `json:"id"`
-	// CompanyID is the ID of the company that owns the probe.
-	CompanyID int `json:"company_id"`
-	// ScannerPlatformID is the ID of the scanner platform associated with the probe.
-	ScannerPlatformID string `json:"scannerplatform_id"`
 	// Name is the name of the probe.
 	Name string `json:"name"`
 	// Description is a description of the probe.
@@ -29,7 +25,6 @@ type Probe struct {
 	IPv4 string `json:"ipv4"`
 	// Subnet is the subnet mask for the probe's network configuration.
 	Subnet string `json:"subnet"`
-	// "gateway": null,
 	// Gateway is the gateway address for the probe's network configuration.
 	Gateway string `json:"gateway"`
 	// DNS1 is the primary DNS server for the probe.
@@ -38,20 +33,19 @@ type Probe struct {
 	DNS2 string `json:"dns2"`
 	// DNS3 is an optional tertiary DNS server for the probe.
 	DNS3 string `json:"dns3"`
-	// ImageLocation is the location of the probe's image archive file.
-	ImageLocation string `json:"image_location"`
 	// Status is the current status of the probe (e.g., online, offline).
 	Status string `json:"status"`
 	// CPUCores is the number of CPU cores allocated to the probe.
 	CPUCores int `json:"cpu_cores"`
 	// Memory is the amount of memory allocated to the probe, in MB.
 	Memory string `json:"memory"`
-	// DownloadRemoved indicates whether the probe's image can be downloaded
-	// after it has been removed from the system.
-	DownloadRemoved bool `json:"download_removed"`
-	// CurrentIPv4Address is the current IPv4 address of the probe, if it has
-	// been assigned one.
-	CurrentIPv4Address string `json:"current_ipv4_address"`
+	// ScannerVersion is the version of the scanner running on the probe.
+	ScannerVersion string `json:"scanner_version"`
+	// Company is the company that owns the probe. Included via ?with=company.
+	Company *Company `json:"company,omitempty"`
+	// ScannerPlatform is the scanner platform associated with the probe.
+	// Included via ?with=scannerplatform.
+	ScannerPlatform *ScannerPlatform `json:"scannerplatform,omitempty"`
 	// CreatedAt is the timestamp when the probe was created.
 	CreatedAt string `json:"created_at"`
 	// UpdatedAt is the timestamp when the probe was last updated.
@@ -156,6 +150,12 @@ func (p *ProbeAPI) Update(data api.APIRequestPayload) (*ProbeAPIResponse, error)
 // Delete deletes a probe.
 func (p *ProbeAPI) Delete() (*ProbeAPIResponse, error) {
 	return api.Do[ProbeAPIResponse](p.APIRequestHandler, "DELETE", p.BuildURL(), nil)
+}
+
+// With sets the relationships to include in the response.
+func (p *ProbeAPI) With(relationships ...string) *ProbeAPI {
+	p.SetParam("with", strings.Join(relationships, ","))
+	return p
 }
 
 // Schedules retrieves the schedules for a probe.

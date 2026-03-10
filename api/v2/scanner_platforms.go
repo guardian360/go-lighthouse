@@ -18,6 +18,12 @@ type ScannerPlatform struct {
 	Name string `json:"name"`
 	// Endpoint is the endpoint URL for the scanner platform.
 	Endpoint string `json:"endpoint"`
+	// Company is the company that owns the scanner platform. Included via
+	// ?with=company.
+	Company *Company `json:"company,omitempty"`
+	// Probe is the probe associated with the scanner platform. Included via
+	// ?with=probe.
+	Probe *Probe `json:"probe,omitempty"`
 	// CreatedAt is the timestamp when the scanner platform was created.
 	CreatedAt string `json:"created_at"`
 	// UpdatedAt is the timestamp when the scanner platform was last updated.
@@ -125,6 +131,12 @@ func (s *ScannerPlatformAPI) Update(data api.APIRequestPayload) (*ScannerPlatfor
 // Delete deletes a scanner platform.
 func (s *ScannerPlatformAPI) Delete() (*ScannerPlatformAPIResponse, error) {
 	return api.Do[ScannerPlatformAPIResponse](s.APIRequestHandler, "DELETE", s.BuildURL(), nil)
+}
+
+// With sets the relationships to include in the response.
+func (s *ScannerPlatformAPI) With(relationships ...string) *ScannerPlatformAPI {
+	s.SetParam("with", strings.Join(relationships, ","))
+	return s
 }
 
 // Schedules retrieves the schedules for a scanner platform.
