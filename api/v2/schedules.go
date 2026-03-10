@@ -12,8 +12,6 @@ import (
 type Schedule struct {
 	// ID is the unique identifier for the schedule.
 	ID string `json:"id"`
-	// CompanyID is the ID of the company that owns the schedule.
-	CompanyID string `json:"company_id"`
 	// Name is the name of the schedule.
 	Name string `json:"name"`
 	// Description is the description of the schedule.
@@ -24,6 +22,9 @@ type Schedule struct {
 	To string `json:"to"`
 	// Active indicates whether the schedule is active or not.
 	Active bool `json:"active"`
+	// Company is the company that owns the schedule. Included via
+	// ?with=company.
+	Company *Company `json:"company,omitempty"`
 	// CreatedAt is the timestamp when the schedule was created.
 	CreatedAt string `json:"created_at"`
 	// UpdatedAt is the timestamp when the schedule was last updated.
@@ -82,6 +83,12 @@ func (p *SchedulesAPI) PerPage(perPage int) *SchedulesAPI {
 // Scopes sets the scopes to filter by.
 func (p *SchedulesAPI) Scopes(scopes ...string) *SchedulesAPI {
 	p.SetParam("scopes", strings.Join(scopes, ","))
+	return p
+}
+
+// With sets the relationships to include in the response.
+func (p *SchedulesAPI) With(relationships ...string) *SchedulesAPI {
+	p.SetParam("with", strings.Join(relationships, ","))
 	return p
 }
 
