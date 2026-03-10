@@ -12,11 +12,6 @@ import (
 type ScanObject struct {
 	// ID is the unique identifier for the scan object.
 	ID string `json:"id"`
-	// CompanyID is the ID of the company that owns the scan object.
-	CompanyID string `json:"company_id"`
-	// ScannerplatformID is the ID of the scanner platform associated with the
-	// scan object.
-	ScannerplatformID string `json:"scanner_platform_id"`
 	// Name is the name of the scan object.
 	Name string `json:"name"`
 	// Value is the value of the scan object, such as an IP address or URL.
@@ -31,6 +26,12 @@ type ScanObject struct {
 	SSL bool `json:"ssl"`
 	// Enabled indicates whether the scan object is enabled for scanning.
 	Enabled bool `json:"enabled"`
+	// Company is the company that owns the scan object. Included via
+	// ?with=company.
+	Company *Company `json:"company,omitempty"`
+	// ScannerPlatform is the scanner platform associated with the scan object.
+	// Included via ?with=scannerplatform.
+	ScannerPlatform *ScannerPlatform `json:"scannerplatform,omitempty"`
 	// CreatedAt is the timestamp when the scan object was created.
 	CreatedAt string `json:"created_at"`
 	// UpdatedAt is the timestamp when the scan object was last updated.
