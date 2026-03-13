@@ -30,14 +30,14 @@ func (api *API) Probe(id string) *ProbeAPI {
 	return NewProbeAPI(api.Client, id)
 }
 
-// ScanTrackers retrieves the scan trackers API.
-func (api *API) ScanTrackers() *ScanTrackersAPI {
-	return NewScanTrackersAPI(api.Client)
+// ScanTasks retrieves the scan tasks API.
+func (api *API) ScanTasks() *ScanTasksAPI {
+	return NewScanTasksAPI(api.Client)
 }
 
-// ScanTracker retrieves the scan tracker API for a specific ID.
-func (api *API) ScanTracker(id string) *ScanTrackerAPI {
-	return NewScanTrackerAPI(api.Client, id)
+// ScanTask retrieves the scan task API for a specific ID.
+func (api *API) ScanTask(id string) *ScanTaskAPI {
+	return NewScanTaskAPI(api.Client, id)
 }
 
 // HostDiscoveries retrieves the host discoveries API.

@@ -153,9 +153,9 @@ func (s *ScannerPlatformAPI) ScanObjects() *ScanObjectsAPI {
 	return scanObjectsAPI
 }
 
-// ScanTrackers retrieves the scan trackers for a scanner platform.
-func (s *ScannerPlatformAPI) ScanTrackers() *ScanTrackersAPI {
-	scanTrackersAPI := NewScanTrackersAPI(s.Client)
-	scanTrackersAPI.BaseURL = s.BaseURL + "/scan-trackers"
-	return scanTrackersAPI
+// ScanTasks retrieves the scan tasks for a scanner platform.
+func (s *ScannerPlatformAPI) ScanTasks() *ScanTasksAPI {
+	scanTasksAPI := NewScanTasksAPI(s.Client)
+	scanTasksAPI.BaseURL = s.BaseURL + "/scan-tasks"
+	return scanTasksAPI
 }

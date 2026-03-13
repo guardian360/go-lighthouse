@@ -172,9 +172,9 @@ func (p *ProbeAPI) ScanObjects() *ScanObjectsAPI {
 	return scanObjectsAPI
 }
 
-// ScanTrackers retrieves the scan trackers for a probe.
-func (p *ProbeAPI) ScanTrackers() *ScanTrackersAPI {
-	scanTrackersAPI := NewScanTrackersAPI(p.Client)
-	scanTrackersAPI.BaseURL = p.BaseURL + "/scan-trackers"
-	return scanTrackersAPI
+// ScanTasks retrieves the scan tasks for a probe.
+func (p *ProbeAPI) ScanTasks() *ScanTasksAPI {
+	scanTasksAPI := NewScanTasksAPI(p.Client)
+	scanTasksAPI.BaseURL = p.BaseURL + "/scan-tasks"
+	return scanTasksAPI
 }
