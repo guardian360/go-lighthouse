@@ -3,6 +3,7 @@ module github.com/guardian360/go-lighthouse
 go 1.24.0
 
 require (
+	github.com/hashicorp/go-retryablehttp v0.7.8
 	github.com/projectdiscovery/interactsh v1.3.0
 	github.com/stretchr/testify v1.11.1
 )
@@ -25,6 +26,7 @@ require (
 	github.com/goburrow/cache v0.1.4 // indirect
 	github.com/golang/snappy v1.0.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
+	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/golang-lru/v2 v2.0.7 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.18.2 // indirect

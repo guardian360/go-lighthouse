@@ -2,7 +2,6 @@ package client
 
 import (
 	"bytes"
-	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -30,12 +29,12 @@ type TokenResponse struct {
 type ClientCredentialsGrant struct {
 	// TokenURL is the URL to fetch the token from.
 	TokenURL string
-	// Insecure specifies whether to skip TLS verification.
-	Insecure bool
 	// ClientID is the client ID.
 	ClientID string
 	// ClientSecret is the client secret.
 	ClientSecret string
+	// HTTPClient is the HTTP client used to fetch tokens.
+	HTTPClient HttpClient
 	// Token is the current token.
 	Token string
 	// Expiry is the time when the token expires.
@@ -68,12 +67,7 @@ func (o *ClientCredentialsGrant) fetchToken() (string, error) {
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	client := &http.Client{
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: o.Insecure},
-		},
-	}
-	resp, err := client.Do(req)
+	resp, err := o.HTTPClient.Do(req)
 	if err != nil {
 		return "", err
 	}

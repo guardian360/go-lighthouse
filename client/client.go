@@ -8,6 +8,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
+
+	"github.com/hashicorp/go-retryablehttp"
 )
 
 // HttpClient is an interface that wraps the Do method of http.Client.
@@ -34,15 +37,28 @@ type Config struct {
 	Insecure bool
 }
 
+// NewHTTPClient creates an *http.Client with retry logic using
+// go-retryablehttp. The returned client transparently retries on 5xx (except
+// 501), 429, and connection errors with exponential backoff and jitter.
+func NewHTTPClient(insecure bool) *http.Client {
+	rc := retryablehttp.NewClient()
+	rc.RetryMax = 3
+	rc.RetryWaitMin = 1 * time.Second
+	rc.RetryWaitMax = 10 * time.Second
+	rc.Logger = nil // silence default log output
+
+	rc.HTTPClient.Transport = &http.Transport{
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: insecure},
+	}
+
+	return rc.StandardClient()
+}
+
 // New creates a new Lighthouse API client.
 func New(cfg Config) *Client {
 	return &Client{
 		BaseURL: cfg.BaseURL,
-		Client: &http.Client{
-			Transport: &http.Transport{
-				TLSClientConfig: &tls.Config{InsecureSkipVerify: cfg.Insecure},
-			},
-		},
+		Client:  NewHTTPClient(cfg.Insecure),
 	}
 }
 
