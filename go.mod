@@ -4,7 +4,7 @@ go 1.24.0
 
 require (
 	github.com/hashicorp/go-retryablehttp v0.7.8
-	github.com/projectdiscovery/interactsh v1.3.0
+	github.com/projectdiscovery/interactsh v1.3.1
 	github.com/stretchr/testify v1.11.1
 )
 
@@ -50,7 +50,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect
 	github.com/projectdiscovery/blackrock v0.0.1 // indirect
-	github.com/projectdiscovery/gologger v1.1.67 // indirect
+	github.com/projectdiscovery/gologger v1.1.68 // indirect
 	github.com/projectdiscovery/ldapserver v1.0.2-0.20240219154113-dcc758ebc0cb // indirect
 	github.com/projectdiscovery/utils v0.9.0 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
