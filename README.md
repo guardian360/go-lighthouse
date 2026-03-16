@@ -84,11 +84,9 @@ import (
 )
 
 func main() {
-    cfg := client.Config{
-        BaseURL: "https://lighthouse.guardian360.nl",
-    }
-    clt := client.New(cfg).WithClientCredentials(
-        cfg.BaseURL+"/oauth/token",
+    baseURL := "https://lighthouse.guardian360.nl"
+    clt := client.New(baseURL).WithClientCredentials(
+        baseURL+"/oauth/token",
         "client_id",
         "client_secret",
     )

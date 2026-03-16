@@ -27,38 +27,49 @@ type Client struct {
 	Client HttpClient
 	// OAuthClient is the OAuth client to use for authentication.
 	OAuthClient OAuthClient
+	// Logger is the optional logger for the client.
+	Logger Logger
 }
 
-// Config represents the configuration for the client.
-type Config struct {
-	// BaseURL is the base URL for the API.
-	BaseURL string
-	// Insecure specifies whether to skip TLS verification.
-	Insecure bool
-}
 
 // NewHTTPClient creates an *http.Client with retry logic using
 // go-retryablehttp. The returned client transparently retries on 5xx (except
 // 501), 429, and connection errors with exponential backoff and jitter.
-func NewHTTPClient(insecure bool) *http.Client {
+func NewHTTPClient(opts ...Option) *http.Client {
+	o := applyOptions(opts)
+
 	rc := retryablehttp.NewClient()
 	rc.RetryMax = 3
 	rc.RetryWaitMin = 1 * time.Second
 	rc.RetryWaitMax = 10 * time.Second
 	rc.Logger = nil // silence default log output
 
+	if o.logger != nil {
+		rc.ResponseLogHook = func(_ retryablehttp.Logger, resp *http.Response) {
+			if resp.StatusCode >= 400 {
+				o.logger.Warn("request failed, retrying",
+					"method", resp.Request.Method,
+					"url", resp.Request.URL.String(),
+					"status", resp.StatusCode,
+				)
+			}
+		}
+	}
+
 	rc.HTTPClient.Transport = &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: insecure},
+		TLSClientConfig: &tls.Config{InsecureSkipVerify: o.insecure},
 	}
 
 	return rc.StandardClient()
 }
 
 // New creates a new Lighthouse API client.
-func New(cfg Config) *Client {
+func New(baseURL string, opts ...Option) *Client {
+	o := applyOptions(opts)
 	return &Client{
-		BaseURL: cfg.BaseURL,
-		Client:  NewHTTPClient(cfg.Insecure),
+		BaseURL: baseURL,
+		Client:  NewHTTPClient(opts...),
+		Logger:  o.logger,
 	}
 }
 
