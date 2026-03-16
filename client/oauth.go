@@ -33,8 +33,8 @@ type ClientCredentialsGrant struct {
 	ClientID string
 	// ClientSecret is the client secret.
 	ClientSecret string
-	// HTTPClient is the HTTP client used to fetch tokens.
-	HTTPClient HttpClient
+	// httpClient is the HTTP client used to fetch tokens.
+	httpClient HttpClient
 	// Token is the current token.
 	Token string
 	// Expiry is the time when the token expires.
@@ -67,7 +67,7 @@ func (o *ClientCredentialsGrant) fetchToken() (string, error) {
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	resp, err := o.HTTPClient.Do(req)
+	resp, err := o.httpClient.Do(req)
 	if err != nil {
 		return "", err
 	}

@@ -87,12 +87,11 @@ func main() {
     cfg := client.Config{
         BaseURL: "https://lighthouse.guardian360.nl",
     }
-    clt := client.New(cfg).WithOAuth(&client.ClientCredentialsGrant{
-        TokenURL:   cfg.BaseURL + "/oauth/token",
-        HTTPClient: client.NewHTTPClient(false),
-        ClientID:   "client_id",
-        ClientSecret: "client_secret",
-    })
+    clt := client.New(cfg).WithClientCredentials(
+        cfg.BaseURL+"/oauth/token",
+        "client_id",
+        "client_secret",
+    )
     lighthouse := api.New(clt)
 
     resp, err := lighthouse.Probes().Get()

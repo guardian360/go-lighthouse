@@ -62,9 +62,15 @@ func New(cfg Config) *Client {
 	}
 }
 
-// WithOAuth sets the OAuth client for the client to use for authentication.
-func (c *Client) WithOAuth(oauth OAuthClient) *Client {
-	c.OAuthClient = oauth
+// WithClientCredentials configures OAuth client credentials grant
+// authentication. Token fetching reuses the client's own HTTP client.
+func (c *Client) WithClientCredentials(tokenURL, clientID, clientSecret string) *Client {
+	c.OAuthClient = &ClientCredentialsGrant{
+		TokenURL:     tokenURL,
+		httpClient:   c.Client,
+		ClientID:     clientID,
+		ClientSecret: clientSecret,
+	}
 	return c
 }
 

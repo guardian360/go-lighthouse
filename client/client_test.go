@@ -218,6 +218,30 @@ func TestAPIError_Error(t *testing.T) {
 	})
 }
 
+func TestClient_WithClientCredentials(t *testing.T) {
+	mock := &mockHTTPClient{}
+	c := &Client{
+		BaseURL: "https://api.example.com",
+		Client:  mock,
+	}
+
+	result := c.WithClientCredentials(
+		"https://api.example.com/oauth/token",
+		"client-id",
+		"client-secret",
+	)
+
+	assert.Same(t, c, result)
+	require.NotNil(t, c.OAuthClient)
+
+	grant, ok := c.OAuthClient.(*ClientCredentialsGrant)
+	require.True(t, ok)
+	assert.Equal(t, "https://api.example.com/oauth/token", grant.TokenURL)
+	assert.Equal(t, "client-id", grant.ClientID)
+	assert.Equal(t, "client-secret", grant.ClientSecret)
+	assert.Same(t, mock, grant.httpClient, "grant should reuse the client's HTTP client")
+}
+
 func min(a, b int) int {
 	if a < b {
 		return a

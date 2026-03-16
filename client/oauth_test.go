@@ -26,7 +26,7 @@ func TestClientCredentialsGrant_GetToken_ReturnsCachedToken(t *testing.T) {
 func TestClientCredentialsGrant_GetToken_FetchesNewTokenWhenExpired(t *testing.T) {
 	grant := &ClientCredentialsGrant{
 		TokenURL: "https://auth.example.com/oauth/token",
-		HTTPClient: &mockHTTPClient{
+		httpClient: &mockHTTPClient{
 			response: &http.Response{
 				StatusCode: http.StatusOK,
 				Body: io.NopCloser(bytes.NewBufferString(
@@ -50,7 +50,7 @@ func TestClientCredentialsGrant_GetToken_FetchesNewTokenWhenExpired(t *testing.T
 func TestClientCredentialsGrant_fetchToken_HTTPError(t *testing.T) {
 	grant := &ClientCredentialsGrant{
 		TokenURL: "https://auth.example.com/oauth/token",
-		HTTPClient: &mockHTTPClient{
+		httpClient: &mockHTTPClient{
 			response: &http.Response{
 				StatusCode: http.StatusUnauthorized,
 				Status:     "401 Unauthorized",
@@ -71,7 +71,7 @@ func TestClientCredentialsGrant_fetchToken_HTTPError(t *testing.T) {
 func TestClientCredentialsGrant_fetchToken_NetworkError(t *testing.T) {
 	grant := &ClientCredentialsGrant{
 		TokenURL: "https://auth.example.com/oauth/token",
-		HTTPClient: &mockHTTPClient{
+		httpClient: &mockHTTPClient{
 			err: assert.AnError,
 		},
 		ClientID:     "test-id",
@@ -87,7 +87,7 @@ func TestClientCredentialsGrant_fetchToken_NetworkError(t *testing.T) {
 func TestClientCredentialsGrant_fetchToken_InvalidJSON(t *testing.T) {
 	grant := &ClientCredentialsGrant{
 		TokenURL: "https://auth.example.com/oauth/token",
-		HTTPClient: &mockHTTPClient{
+		httpClient: &mockHTTPClient{
 			response: &http.Response{
 				StatusCode: http.StatusOK,
 				Body:       io.NopCloser(bytes.NewBufferString(`not json`)),
