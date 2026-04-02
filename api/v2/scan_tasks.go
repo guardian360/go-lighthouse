@@ -142,6 +142,12 @@ func NewScanTaskAPI(c *client.Client, id string) *ScanTaskAPI {
 	}
 }
 
+// With sets the relationships to include in the response.
+func (s *ScanTaskAPI) With(relationships ...string) *ScanTaskAPI {
+	s.SetParam("with", strings.Join(relationships, ","))
+	return s
+}
+
 // Get retrieves a single scan task.
 func (s *ScanTaskAPI) Get() (*ScanTaskAPIResponse, error) {
 	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "GET", s.BuildURL(), nil)
