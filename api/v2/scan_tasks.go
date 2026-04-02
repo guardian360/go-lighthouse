@@ -21,6 +21,12 @@ type ScanTask struct {
 	ProbeID string `json:"probe_id"`
 	// Type is the type of the scan task (0 for scheduled, 1 for rescan).
 	Type string `json:"type"`
+	// Company is the company that owns the scan task, included via ?with=company.
+	Company *Company `json:"company,omitempty"`
+	// ScannerPlatform is the scanner platform associated with the scan task, included via ?with=scannerplatform.
+	ScannerPlatform *ScannerPlatform `json:"scannerplatform,omitempty"`
+	// Probe is the probe associated with the scan task, included via ?with=probe.
+	Probe *Probe `json:"probe,omitempty"`
 	// RescanTargets contains the rescan targets, included via ?with=rescan-targets.
 	RescanTargets []RescanTarget `json:"rescanTargets,omitempty"`
 	// StartedAt is the timestamp when the scan task was started.
