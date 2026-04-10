@@ -22,8 +22,6 @@ type HostDiscovery struct {
 		Protocol string `json:"protocol"`
 		TLS      bool   `json:"tls"`
 	} `json:"ports"`
-	// Confidence is the confidence level of the discovery.
-	Confidence int `json:"confidence"`
 	// CreatedAt is the timestamp when the discovery was created.
 	CreatedAt string `json:"created_at"`
 	// UpdatedAt is the timestamp when the discovery was last updated.
