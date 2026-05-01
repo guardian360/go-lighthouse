@@ -26,7 +26,7 @@ func NewHeartbeatAPI(c *client.Client) *HeartbeatAPI {
 	return &HeartbeatAPI{
 		APIRequestHandler: api.APIRequestHandler{
 			Client:  c,
-			BaseURL: c.BaseURL + "/heartbeat",
+			BaseURL: c.BaseURL + "/api/heartbeat",
 		},
 	}
 }
