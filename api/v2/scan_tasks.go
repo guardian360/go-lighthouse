@@ -177,6 +177,13 @@ func (s *ScanTaskAPI) AssociateScanObjects(ids []string) (*ScanTaskAPIResponse, 
 	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), payload)
 }
 
+// ScanObjects retrieves the scan objects associated with a scan task.
+func (s *ScanTaskAPI) ScanObjects() *ScanObjectsAPI {
+	scanObjectsAPI := NewScanObjectsAPI(s.Client)
+	scanObjectsAPI.BaseURL = s.BaseURL + "/scan-objects"
+	return scanObjectsAPI
+}
+
 // HostDiscoveries retrieves the host discoveries for a scan task.
 func (s *ScanTaskAPI) HostDiscoveries() *HostDiscoveriesAPI {
 	hostDiscoveriesAPI := NewHostDiscoveriesAPI(s.Client)
