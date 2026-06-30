@@ -170,13 +170,6 @@ func (s *ScanTaskAPI) Update(data api.APIRequestPayload) (*ScanTaskAPIResponse, 
 	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "PATCH", s.BuildURL(), data)
 }
 
-// AssociateScanObjects associates scan objects with a scan task.
-func (s *ScanTaskAPI) AssociateScanObjects(ids []string) (*ScanTaskAPIResponse, error) {
-	s.BaseURL = s.BaseURL + "/scanobjects"
-	payload := api.APIRequestPayload{"ids": ids}
-	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), payload)
-}
-
 // ScanObjects retrieves the scan objects associated with a scan task.
 func (s *ScanTaskAPI) ScanObjects() *ScanObjectsAPI {
 	scanObjectsAPI := NewScanObjectsAPI(s.Client)
