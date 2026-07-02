@@ -19,8 +19,14 @@ type ScanTask struct {
 	ScannerPlatformID string `json:"scannerplatform_id"`
 	// ProbeID is the ID of the probe associated with the scan task.
 	ProbeID string `json:"probe_id"`
-	// Type is the type of the scan task (0 for scheduled, 1 for rescan).
+	// Type is the human-readable label for the scan task type (e.g. "Rescan").
+	// It is intended for display; consumers that need to branch on the type
+	// should use TypeKey instead.
 	Type string `json:"type"`
+	// TypeKey is the stable, machine-readable identifier for the scan task type
+	// ("scheduled", "rescan", or "user-created"). Unlike Type, it is a contract
+	// value safe to dispatch on.
+	TypeKey string `json:"type_key"`
 	// Company is the company that owns the scan task, included via ?with=company.
 	Company *Company `json:"company,omitempty"`
 	// ScannerPlatform is the scanner platform associated with the scan task, included via ?with=scannerplatform.
