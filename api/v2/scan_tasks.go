@@ -167,8 +167,15 @@ func (s *ScanTaskAPI) Start() (*ScanTaskAPIResponse, error) {
 
 // Stop stops a scan task.
 func (s *ScanTaskAPI) Stop() (*ScanTaskAPIResponse, error) {
+	return s.StopWith(nil)
+}
+
+// StopWith stops a scan task and sends data as the request body: what the run
+// tells Lighthouse as it ends, such as what it covered. A nil payload sends no
+// body, exactly as Stop does.
+func (s *ScanTaskAPI) StopWith(data api.APIRequestPayload) (*ScanTaskAPIResponse, error) {
 	s.BaseURL = s.BaseURL + "/stop"
-	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), nil)
+	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), data)
 }
 
 // Update updates a scan task with the given payload.
