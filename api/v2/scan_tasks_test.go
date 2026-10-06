@@ -1,10 +1,10 @@
 package v2
 
 import (
-	"bytes"
 	"encoding/json"
 	"io"
 	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -14,66 +14,63 @@ import (
 	"github.com/guardian360/go-lighthouse/client"
 )
 
-// recordingHTTPClient keeps the last request it was asked to send and answers
-// with an empty scan task.
-type recordingHTTPClient struct {
-	request *http.Request
-	body    []byte
+// stopRequest is what a stub Lighthouse received when a scan task was stopped.
+type stopRequest struct {
+	method      string
+	path        string
+	contentType string
+	body        []byte
 }
 
-func (r *recordingHTTPClient) Do(req *http.Request) (*http.Response, error) {
-	r.request = req
-	if req.Body != nil {
-		body, err := io.ReadAll(req.Body)
-		if err != nil {
-			return nil, err
-		}
-		r.body = body
-	}
-	return &http.Response{
-		StatusCode: http.StatusOK,
-		Status:     "200 OK",
-		Body:       io.NopCloser(bytes.NewBufferString(`{"data": {}}`)),
-	}, nil
-}
+// stopScanTask stops scan task "task-1" against a stub Lighthouse and returns
+// what the stub received.
+func stopScanTask(t *testing.T, stop func(*ScanTaskAPI) (*ScanTaskAPIResponse, error)) stopRequest {
+	t.Helper()
 
-func newRecordingScanTaskAPI() (*ScanTaskAPI, *recordingHTTPClient) {
-	recorder := &recordingHTTPClient{}
-	c := &client.Client{BaseURL: "https://lighthouse.example", Client: recorder}
-	return NewScanTaskAPI(c, "task-1"), recorder
+	var received stopRequest
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		body, err := io.ReadAll(r.Body)
+		require.NoError(t, err)
+		received = stopRequest{method: r.Method, path: r.URL.Path, contentType: r.Header.Get("Content-Type"), body: body}
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"data": {}}`))
+	}))
+	t.Cleanup(server.Close)
+
+	_, err := stop(NewScanTaskAPI(client.New(server.URL), "task-1"))
+	require.NoError(t, err)
+
+	return received
 }
 
 func TestScanTaskAPI_Stop(t *testing.T) {
 	t.Run("posts to the task's stop route with no body", func(t *testing.T) {
-		scanTask, recorder := newRecordingScanTaskAPI()
+		received := stopScanTask(t, (*ScanTaskAPI).Stop)
 
-		_, err := scanTask.Stop()
-
-		require.NoError(t, err)
-		assert.Equal(t, http.MethodPost, recorder.request.Method)
-		assert.Equal(t, "https://lighthouse.example/api/v2/scan-tasks/task-1/stop", recorder.request.URL.String())
-		assert.Empty(t, recorder.body, "Stop sends no body, as it always has")
+		assert.Equal(t, http.MethodPost, received.method)
+		assert.Equal(t, "/api/v2/scan-tasks/task-1/stop", received.path)
+		assert.Empty(t, received.body, "Stop sends no body, as it always has")
 	})
 
-	t.Run("StopWith sends its payload as the JSON body", func(t *testing.T) {
-		scanTask, recorder := newRecordingScanTaskAPI()
+	t.Run("a nil report is the same request as Stop", func(t *testing.T) {
+		stopped := stopScanTask(t, (*ScanTaskAPI).Stop)
+		reported := stopScanTask(t, func(s *ScanTaskAPI) (*ScanTaskAPIResponse, error) { return s.StopAndReport(nil) })
 
-		_, err := scanTask.StopWith(api.APIRequestPayload{"coverage": map[string]any{"protocols": []string{"tcp"}}})
+		assert.Equal(t, stopped, reported)
+	})
+}
 
-		require.NoError(t, err)
-		assert.Equal(t, http.MethodPost, recorder.request.Method)
-		assert.Equal(t, "https://lighthouse.example/api/v2/scan-tasks/task-1/stop", recorder.request.URL.String())
+func TestScanTaskAPI_StopAndReport(t *testing.T) {
+	t.Run("sends the report as the JSON body of the stop request", func(t *testing.T) {
+		report := api.APIRequestPayload{"coverage": map[string]any{"protocols": []string{"tcp"}}}
+
+		received := stopScanTask(t, func(s *ScanTaskAPI) (*ScanTaskAPIResponse, error) { return s.StopAndReport(report) })
+
+		assert.Equal(t, http.MethodPost, received.method)
+		assert.Equal(t, "/api/v2/scan-tasks/task-1/stop", received.path)
+		assert.Equal(t, "application/json", received.contentType)
 		var sent map[string]any
-		require.NoError(t, json.Unmarshal(recorder.body, &sent))
+		require.NoError(t, json.Unmarshal(received.body, &sent))
 		assert.Equal(t, map[string]any{"coverage": map[string]any{"protocols": []any{"tcp"}}}, sent)
-	})
-
-	t.Run("StopWith with no payload behaves exactly like Stop", func(t *testing.T) {
-		scanTask, recorder := newRecordingScanTaskAPI()
-
-		_, err := scanTask.StopWith(nil)
-
-		require.NoError(t, err)
-		assert.Empty(t, recorder.body)
 	})
 }
