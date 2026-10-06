@@ -165,10 +165,17 @@ func (s *ScanTaskAPI) Start() (*ScanTaskAPIResponse, error) {
 	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), nil)
 }
 
-// Stop stops a scan task.
+// Stop stops a scan task, telling Lighthouse nothing more about the run.
 func (s *ScanTaskAPI) Stop() (*ScanTaskAPIResponse, error) {
+	return s.StopAndReport(nil)
+}
+
+// StopAndReport stops a scan task and sends report as the request body: what
+// the run tells Lighthouse as it ends, such as what it covered. A nil report
+// sends no body, exactly as Stop does.
+func (s *ScanTaskAPI) StopAndReport(report api.APIRequestPayload) (*ScanTaskAPIResponse, error) {
 	s.BaseURL = s.BaseURL + "/stop"
-	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), nil)
+	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), report)
 }
 
 // Update updates a scan task with the given payload.
