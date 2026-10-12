@@ -60,16 +60,6 @@ func (api *API) ScanResult(id string) *ScanResultAPI {
 	return NewScanResultAPI(api.Client, id)
 }
 
-// CrawledURLs retrieves the crawled URLs API.
-func (api *API) CrawledURLs() *CrawledURLsAPI {
-	return NewCrawledURLsAPI(api.Client)
-}
-
-// CrawledURL retrieves the crawled URL API for a specific ID.
-func (api *API) CrawledURL(id string) *CrawledURLAPI {
-	return NewCrawledURLAPI(api.Client, id)
-}
-
 // ScannerPlatforms retrieves the scanner platforms API.
 func (api *API) ScannerPlatforms() *ScannerPlatformsAPI {
 	return NewScannerPlatformsAPI(api.Client)

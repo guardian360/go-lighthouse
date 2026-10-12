@@ -233,10 +233,3 @@ func (s *ScanTaskAPI) ScanResults() *ScanResultsAPI {
 	scanResultsAPI.BaseURL = s.BaseURL + "/scan-results"
 	return scanResultsAPI
 }
-
-// CrawledURLs retrieves the crawled URLs for a scan task.
-func (s *ScanTaskAPI) CrawledURLs() *CrawledURLsAPI {
-	crawledURLsAPI := NewCrawledURLsAPI(s.Client)
-	crawledURLsAPI.BaseURL = s.BaseURL + "/crawled-urls"
-	return crawledURLsAPI
-}
