@@ -33,7 +33,16 @@ type ScanTask struct {
 	ScannerPlatform *ScannerPlatform `json:"scannerplatform,omitempty"`
 	// Probe is the probe associated with the scan task, included via ?with=probe.
 	Probe *Probe `json:"probe,omitempty"`
-	// RescanTargets contains the rescan targets, included via ?with=rescan-targets.
+	// Phases are the checks the run consists of ("discovery", "vulnerability",
+	// ...). Nil means the scanner platform's own scan profile.
+	Phases []string `json:"phases"`
+	// Targets are what the run is aimed at, included via ?with=targets. A run
+	// with targets scans only those; one without scans its scan objects.
+	Targets []ScanTaskTarget `json:"targets,omitempty"`
+	// RescanTargets contains the finding targets only, included via
+	// ?with=rescan-targets.
+	//
+	// Deprecated: use Targets, which also holds host targets.
 	RescanTargets []RescanTarget `json:"rescanTargets,omitempty"`
 	// StartedAt is the timestamp when the scan task was started.
 	StartedAt string `json:"started_at"`
@@ -47,8 +56,29 @@ type ScanTask struct {
 	Error string `json:"error,omitempty"`
 }
 
+// ScanTaskTarget is one thing a run is aimed at: a finding (ScanResultID,
+// with the Template that produced it) or a host (HostDiscoveryID). Exactly one
+// of the two IDs is set.
+type ScanTaskTarget struct {
+	ID int `json:"id"`
+	// ScanObjectID is the scan object the target belongs to.
+	ScanObjectID string `json:"scanobject_id"`
+	// ScanResultID is set when the target is a finding.
+	ScanResultID *string `json:"scan_result_id"`
+	// HostDiscoveryID is set when the target is a host.
+	HostDiscoveryID *string `json:"host_discovery_id"`
+	// Target is what to scan: an IP or URL, optionally with a port.
+	Target string `json:"target"`
+	// Template is the check that produced a finding; nil for a host.
+	Template  *string `json:"template"`
+	CreatedAt string  `json:"created_at"`
+	UpdatedAt string  `json:"updated_at"`
+}
+
 // RescanTarget represents a target for a rescan operation, included as a
 // relationship on ScanTask via ?with=rescan-targets.
+//
+// Deprecated: use ScanTaskTarget, read through ScanTask.Targets.
 type RescanTarget struct {
 	ID           int    `json:"id"`
 	ScanObjectID string `json:"scanobject_id"`

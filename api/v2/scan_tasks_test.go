@@ -74,3 +74,48 @@ func TestScanTaskAPI_StopAndReport(t *testing.T) {
 		assert.Equal(t, map[string]any{"coverage": map[string]any{"protocols": []any{"tcp"}}}, sent)
 	})
 }
+
+func TestScanTaskAPI_Get_TargetsAndPhases(t *testing.T) {
+	var query string
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		query = r.URL.RawQuery
+		w.Header().Set("Content-Type", "application/json")
+		_, _ = w.Write([]byte(`{"data": {
+			"id": "task-1",
+			"phases": ["discovery", "vulnerability"],
+			"targets": [
+				{"id": 1, "scanobject_id": "so-1", "scan_result_id": "sr-1", "host_discovery_id": null, "target": "https://example.test:8443", "template": "ssl-weak-cipher"},
+				{"id": 2, "scanobject_id": "so-1", "scan_result_id": null, "host_discovery_id": "hd-1", "target": "10.0.0.5", "template": null}
+			]
+		}}`))
+	}))
+	t.Cleanup(server.Close)
+
+	response, err := NewScanTaskAPI(client.New(server.URL), "task-1").With("targets").Get()
+	require.NoError(t, err)
+
+	assert.Equal(t, "with=targets", query)
+	task := response.Data
+	assert.Equal(t, []string{"discovery", "vulnerability"}, task.Phases)
+	require.Len(t, task.Targets, 2)
+
+	finding, host := task.Targets[0], task.Targets[1]
+	require.NotNil(t, finding.ScanResultID)
+	assert.Equal(t, "sr-1", *finding.ScanResultID)
+	assert.Nil(t, finding.HostDiscoveryID)
+	require.NotNil(t, finding.Template)
+	assert.Equal(t, "ssl-weak-cipher", *finding.Template)
+
+	require.NotNil(t, host.HostDiscoveryID)
+	assert.Equal(t, "hd-1", *host.HostDiscoveryID)
+	assert.Nil(t, host.ScanResultID)
+	assert.Nil(t, host.Template, "a host target has no template")
+	assert.Equal(t, "10.0.0.5", host.Target)
+}
+
+func TestScanTask_NullPhasesMeanTheProfile(t *testing.T) {
+	var task ScanTask
+	require.NoError(t, json.Unmarshal([]byte(`{"id": "task-1", "phases": null}`), &task))
+
+	assert.Nil(t, task.Phases)
+}
