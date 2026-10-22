@@ -19,9 +19,9 @@ type ScanTask struct {
 	ScannerPlatformID string `json:"scannerplatform_id"`
 	// ProbeID is the ID of the probe associated with the scan task.
 	ProbeID string `json:"probe_id"`
-	// Type is the human-readable label for the scan task type (e.g. "Scheduled scan").
-	// It is intended for display; consumers that need to branch on the type
-	// should use TypeKey instead.
+	// Type is the human-readable label for the scan task type (e.g.
+	// "Scheduled scan"). It is intended for display; consumers that need to
+	// branch on the type should use TypeKey instead.
 	Type string `json:"type"`
 	// TypeKey is the stable, machine-readable identifier for the scan task type:
 	// who started the run, "scheduled" or "user-created". Runs from before
@@ -72,7 +72,9 @@ type ScanTaskTarget struct {
 	UpdatedAt string  `json:"updated_at"`
 }
 
-// ScanTasksAPI is the API for the scan tasks resource.
+// ScanTasksAPI is the API for the scan tasks resource. It does not start
+// runs: a run starts from its Scan, through
+// POST /api/v2/scans/{scan}/scan-tasks.
 type ScanTasksAPI struct {
 	api.APIRequestHandler
 }
