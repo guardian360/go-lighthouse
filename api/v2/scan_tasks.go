@@ -19,13 +19,15 @@ type ScanTask struct {
 	ScannerPlatformID string `json:"scannerplatform_id"`
 	// ProbeID is the ID of the probe associated with the scan task.
 	ProbeID string `json:"probe_id"`
-	// Type is the human-readable label for the scan task type (e.g. "Rescan").
+	// Type is the human-readable label for the scan task type (e.g. "Scheduled scan").
 	// It is intended for display; consumers that need to branch on the type
 	// should use TypeKey instead.
 	Type string `json:"type"`
-	// TypeKey is the stable, machine-readable identifier for the scan task type
-	// ("scheduled", "rescan", or "user-created"). Unlike Type, it is a contract
-	// value safe to dispatch on.
+	// TypeKey is the stable, machine-readable identifier for the scan task type:
+	// who started the run, "scheduled" or "user-created". Runs from before
+	// Lighthouse retired the rescan type may still say "rescan". Whether a run
+	// is aimed at specific findings or hosts is its Targets, not its type.
+	// Unlike Type, it is a contract value safe to dispatch on.
 	TypeKey string `json:"type_key"`
 	// Company is the company that owns the scan task, included via ?with=company.
 	Company *Company `json:"company,omitempty"`
@@ -39,11 +41,6 @@ type ScanTask struct {
 	// Targets are what the run is aimed at, included via ?with=targets. A run
 	// with targets scans only those; one without scans its scan objects.
 	Targets []ScanTaskTarget `json:"targets,omitempty"`
-	// RescanTargets contains the finding targets only, included via
-	// ?with=rescan-targets.
-	//
-	// Deprecated: use Targets, which also holds host targets.
-	RescanTargets []RescanTarget `json:"rescanTargets,omitempty"`
 	// StartedAt is the timestamp when the scan task was started.
 	StartedAt string `json:"started_at"`
 	// StoppedAt is the timestamp when the scan task was stopped, if applicable.
@@ -75,19 +72,6 @@ type ScanTaskTarget struct {
 	UpdatedAt string  `json:"updated_at"`
 }
 
-// RescanTarget represents a target for a rescan operation, included as a
-// relationship on ScanTask via ?with=rescan-targets.
-//
-// Deprecated: use ScanTaskTarget, read through ScanTask.Targets.
-type RescanTarget struct {
-	ID           int    `json:"id"`
-	ScanObjectID string `json:"scanobject_id"`
-	Target       string `json:"target"`
-	Template     string `json:"template"`
-	CreatedAt    string `json:"created_at"`
-	UpdatedAt    string `json:"updated_at"`
-}
-
 // ScanTasksAPI is the API for the scan tasks resource.
 type ScanTasksAPI struct {
 	api.APIRequestHandler
@@ -116,11 +100,6 @@ func NewScanTasksAPI(c *client.Client) *ScanTasksAPI {
 // Get retrieves a list of scan tasks.
 func (s *ScanTasksAPI) Get() (*ScanTasksAPIResponse, error) {
 	return api.Do[ScanTasksAPIResponse](s.APIRequestHandler, "GET", s.BuildURL(), nil)
-}
-
-// Create creates a scan task.
-func (s *ScanTasksAPI) Create(data api.APIRequestPayload) (*ScanTaskAPIResponse, error) {
-	return api.Do[ScanTaskAPIResponse](s.APIRequestHandler, "POST", s.BuildURL(), data)
 }
 
 // Page sets the page number for pagination.
